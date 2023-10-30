@@ -6,6 +6,9 @@ import { CardsBlock } from "../../components/CardsBlock";
 import { Typography } from "@mui/material";
 
 export const Board = () => {
+  useEffect(() => {
+    window.scrollTo(2700, 3400);
+  });
   return (
     <div className="body">
       <HexGrid />
