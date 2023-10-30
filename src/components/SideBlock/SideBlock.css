@@ -1,0 +1,14 @@
+.wrapper {
+  border-radius: 10px;
+  background-color: #d9d9d9;
+  height: 330px;
+  width: 240px;
+  float: right !important;
+  display: flex;
+  margin: 0px;
+}
+img {
+  height: 250px;
+  width: 30px;
+  margin-top: 30px;
+}

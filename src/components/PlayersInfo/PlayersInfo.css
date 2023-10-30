@@ -1,0 +1,117 @@
+.playerblock {
+  width: 210px;
+  height: 80px;
+  background-color: white;
+  float: right;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.nicknamebox {
+  display: flex;
+  height: 25px !important;
+  justify-content: space-between;
+}
+.personicon {
+  border: 2px solid red;
+  border-radius: 20px;
+  margin-top: 2px;
+}
+.nickname {
+  margin-left: 3px !important;
+  margin-top: 5px !important;
+  font-weight: bold !important;
+  font-size: small !important;
+}
+.bren_text {
+  font-size: 13px !important;
+  padding-top: 3px !important;
+  border: 1px solid orange;
+  border-radius: 20px;
+  background-color: orange;
+  padding: 3px;
+}
+.challenger_text {
+  font-size: 13px !important;
+  padding-top: 3px !important;
+  border: 1px solid rgb(0, 119, 255);
+  border-radius: 20px;
+  background-color: rgb(0, 119, 255);
+  padding: 5px;
+  color: white;
+}
+.nickname_stack {
+  display: flex !important;
+  flex-direction: row !important;
+}
+.line {
+  margin: 2px;
+}
+.cardsbox {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.eposcard_number {
+  border: 1px solid red;
+  text-align: center;
+  background-color: red;
+  width: 13px;
+  border-radius: 2px;
+  padding: 3px;
+}
+.actioncard_number {
+  border: 1px solid green;
+  text-align: center;
+  background-color: green;
+  width: 15px;
+  border-radius: 2px;
+  padding: 3px;
+}
+.advantcard_number {
+  border: 1px solid yellow;
+  text-align: center;
+  background-color: yellow;
+  width: 15px;
+  border-radius: 2px;
+  padding: 3px;
+}
+.clans_number_container {
+  position: relative;
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-top: 0px;
+  border-bottom: 32px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clans_number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-52%, 35%);
+  color: white;
+}
+
+.deed_number {
+  border: 1px solid rgb(250, 109, 58);
+  text-align: center;
+  background-color: rgb(250, 109, 58);
+  width: 15px;
+  border-radius: 20px;
+  padding: 3px;
+}
+.eposcard_stack {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center;
+  width: 30px;
+}
+.eposcard_text {
+  font-size: 13px !important;
+}

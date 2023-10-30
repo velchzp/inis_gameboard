@@ -1,0 +1,29 @@
+body {
+  background-color: #2a4380;
+  height: 7000px;
+  width: 7000px;
+  margin: 0px;
+}
+.board {
+  position: absolute;
+  z-index: 0;
+}
+
+.sideblock {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+.cards_block {
+  position: fixed;
+  bottom: 0;
+  height: 230px;
+  z-index: 1;
+  width: 100%;
+}
+.hex_text {
+  fill: black;
+  font-size: 10px;
+  position: absolute;
+  top: 50%;
+}

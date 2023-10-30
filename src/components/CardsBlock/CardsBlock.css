@@ -1,0 +1,60 @@
+.cards_wrapper {
+  background-color: #d9d9d9;
+  display: flex;
+  justify-content: space-between;
+  margin: 0px;
+}
+.epos_cards {
+  display: flex;
+  margin-top: 10px;
+  width: 30%;
+  justify-content: center;
+  /* border: 2px solid black; */
+}
+.actions_cards {
+  display: flex;
+  margin-top: 10px;
+  width: 40%;
+  justify-content: center;
+  /* border: 2px solid black; */
+}
+.advantage_cards {
+  display: flex;
+  margin-top: 10px;
+  width: 30%;
+  justify-content: center;
+  /* border: 2px solid black; */
+}
+.card {
+  height: 220px;
+  margin: 0;
+  width: 140px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  z-index: 1;
+}
+
+.card:hover {
+  transform: scale(1.7) translateY(-57px);
+  z-index: 2;
+}
+
+#card_epos:hover {
+  transform: scale(1.7) translateY(-57px) translateX(30px);
+  z-index: 2;
+}
+
+#card_adv:hover {
+  transform: scale(1.7) translateY(-57px) translateX(-30px);
+  z-index: 2;
+}
+
+#card_epos + #card_epos {
+  margin-left: -95px;
+}
+#card_adv + #card_adv {
+  margin-left: -65px;
+}
+.card + .card {
+  margin-left: -35px;
+}
