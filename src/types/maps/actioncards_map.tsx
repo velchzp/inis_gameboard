@@ -1,5 +1,5 @@
-import { Card_type, Timing_to_play, Badge } from "./Enums";
-import { Card } from "./types";
+import { Card_type, Timing_to_play, Badge } from "../Enums";
+import { Card } from "../types";
 
 //Action cards
 export const Sanctuary: Card = {

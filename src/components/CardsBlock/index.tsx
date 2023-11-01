@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import { socket } from "../../sockets/socket";
 import { useEffect, useState } from "react";
 import { IMyDeckUiInfo } from "../../types/types";
-import { cardActionMap } from "../../types/cards_map";
+import { cardActionMap } from "../../types/maps/actioncards_map";
 import { Card } from "../../types/types";
 
 export const CardsBlock = () => {
@@ -19,8 +19,8 @@ export const CardsBlock = () => {
       setAdv_cards_ids(deckinfo.AdvantagesCards);
     });
   }, []);
-  console.log(action_cards_ids);
-  console.log(cardActionMap.get(action_cards_ids[0]));
+  // console.log(action_cards_ids);
+  // console.log(cardActionMap.get(action_cards_ids[0]));
   return (
     <div className="cards_wrapper">
       <Box className="epos_cards">

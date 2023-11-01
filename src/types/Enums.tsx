@@ -25,3 +25,6 @@ export enum Badge {
   MoveAndAttack,
   None,
 }
+export enum StartStructure {
+  Shrine,
+}

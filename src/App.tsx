@@ -13,6 +13,7 @@ function App() {
     );
     socket.emit("sidebar-update");
     socket.emit("my-deck-update");
+    socket.emit("map-update");
   }, []);
 
   socket.on("gameLobby-info", (info) => {

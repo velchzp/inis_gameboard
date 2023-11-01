@@ -12,7 +12,6 @@ export const SideBlock = () => {
     socket.on("sidebar-update", (data: ISidebarUiInfo) => {
       setPlayers(data.players);
       setDirection(data.turnDirection);
-      console.log(data);
     });
 
     // Clean up the event listener when the component unmounts

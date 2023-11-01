@@ -1,5 +1,5 @@
 import { playerAction } from "./Enums";
-import { Card_type, Timing_to_play, Badge } from "./Enums";
+import { Card_type, Timing_to_play, Badge, StartStructure } from "./Enums";
 
 export interface Player {
   username: string;
@@ -56,4 +56,36 @@ export type Card = {
   trixelCondition?: string;
   secondDescription?: string;
   img_url?: string;
+};
+
+export type axialCoordinates = {
+  q: number;
+  r: number;
+};
+
+export interface Field {
+  territoryId: string;
+  sanctuaryCount: number;
+  citadelsCount: number;
+  playersClans: Map<string, number>;
+  leaderPlayerId: string | null;
+}
+
+export interface IMapUiInfo {
+  capital: axialCoordinates | null;
+  holiday: axialCoordinates | null;
+  hexGrid: {
+    q: number;
+    r: number;
+    field: Field;
+  }[];
+  terLeft: number;
+}
+export type Territory = {
+  id: string;
+  title: string;
+  description: string;
+  cardId: string;
+  startStructure?: StartStructure;
+  field_color: string;
 };
