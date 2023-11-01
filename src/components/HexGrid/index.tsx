@@ -2,18 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { socket } from "../../sockets/socket";
 import { IMapUiInfo, axialCoordinates, Field } from "../../types/types";
 import { territoryMap } from "../../types/maps/territory_map";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../../redux/store";
+import { fetchHexagons } from "../../redux/slices/hexagonsSlice";
 
 export const HexGrid = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [hexagons, setHexagons] = useState<IMapUiInfo["hexGrid"]>([]);
+  const dispatch: AppDispatch = useDispatch();
+  const hexagons = useSelector((state: RootState) => state.hexagons.hexagons);
 
   useEffect(() => {
-    socket.on("map-update", (mapInfo: IMapUiInfo) => {
-      setHexagons(mapInfo.hexGrid);
-    });
-  }, []);
-  console.log(hexagons);
-  useEffect(() => {
+    dispatch(fetchHexagons());
+    console.log(hexagons);
     if (!canvasRef.current) {
       return;
     }
@@ -46,44 +46,44 @@ export const HexGrid = () => {
       ctx.strokeStyle = "black";
 
       ctx.stroke();
-
-      // ctx.fillStyle = "black";
-      // ctx.font = "19px Arial";
-      // ctx.textAlign = "center";
-      // ctx.textBaseline = "middle";
-      // ctx.fillText(landName, x, y - 150);
-
-      // if (holiday) {
-      //   Add_img(ctx, "/holiday_token.png", x, y, 35, 90);
-      // }
-
-      // if (castle > 0) {
-      //   ctx.font = "19px Arial";
-      //   ctx.fillText(castle, x + 15, y - 100);
-      //   Add_img(ctx, "/castle 1.png", x, y, 40, -110);
-      // }
-      // if (chapel > 0) {
-      //   ctx.font = "19px Arial";
-      //   ctx.fillText(chapel, x + 105, y - 100);
-      //   Add_img(ctx, "/chapel 1.png", x, y, -50, -110);
-      // }
-      // if (capital > 0) {
-      //   Add_img(ctx, "/capital.png", x, y, 140, -110);
-      // }
-      // if (player1_clans > 0) {
-      //   Add_Clans(ctx, x - 120, y + 20, "blue", player1_clans);
-      // }
-      // if (player2_clans > 0) {
-      //   Add_Clans(ctx, x - 45, y + 20, "red", player2_clans);
-      // }
-      // if (player3_clans > 0) {
-      //   Add_Clans(ctx, x + 30, y + 20, "purple", player3_clans);
-      // }
-      // if (player4_clans > 0) {
-      //   Add_Clans(ctx, x + 110, y + 20, "black", player4_clans);
-      // }
     });
-  }, []);
+  }, [dispatch, hexagons]);
+
+  // ctx.fillStyle = "black";
+  // ctx.font = "19px Arial";
+  // ctx.textAlign = "center";
+  // ctx.textBaseline = "middle";
+  // ctx.fillText(landName, x, y - 150);
+
+  // if (holiday) {
+  //   Add_img(ctx, "/holiday_token.png", x, y, 35, 90);
+  // }
+
+  // if (castle > 0) {
+  //   ctx.font = "19px Arial";
+  //   ctx.fillText(castle, x + 15, y - 100);
+  //   Add_img(ctx, "/castle 1.png", x, y, 40, -110);
+  // }
+  // if (chapel > 0) {
+  //   ctx.font = "19px Arial";
+  //   ctx.fillText(chapel, x + 105, y - 100);
+  //   Add_img(ctx, "/chapel 1.png", x, y, -50, -110);
+  // }
+  // if (capital > 0) {
+  //   Add_img(ctx, "/capital.png", x, y, 140, -110);
+  // }
+  // if (player1_clans > 0) {
+  //   Add_Clans(ctx, x - 120, y + 20, "blue", player1_clans);
+  // }
+  // if (player2_clans > 0) {
+  //   Add_Clans(ctx, x - 45, y + 20, "red", player2_clans);
+  // }
+  // if (player3_clans > 0) {
+  //   Add_Clans(ctx, x + 30, y + 20, "purple", player3_clans);
+  // }
+  // if (player4_clans > 0) {
+  //   Add_Clans(ctx, x + 110, y + 20, "black", player4_clans);
+  // }
 
   // function Add_img(ctx, scr, x, y, cor_x, cor_y) {
   //   const img = new Image();

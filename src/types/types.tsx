@@ -89,3 +89,7 @@ export type Territory = {
   startStructure?: StartStructure;
   field_color: string;
 };
+
+export interface HexagonState {
+  hexagons: IMapUiInfo["hexGrid"];
+}
