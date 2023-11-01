@@ -90,6 +90,11 @@ export type Territory = {
   field_color: string;
 };
 
-export interface HexagonState {
-  hexagons: IMapUiInfo["hexGrid"];
+export interface LobbyInfo {
+  status: string;
+  info: {
+    gameId: string;
+    playerId: string;
+    socket: string;
+  }[];
 }

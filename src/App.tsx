@@ -3,8 +3,13 @@ import { Route, Routes } from "react-router-dom";
 import { socket } from "./sockets/socket";
 import { useEffect } from "react";
 import { Board } from "./pages/Board";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "./redux/store";
+import { fetchLobbyInfo } from "./redux/slices/LobbyInfoSlice";
 
 function App() {
+  const dispatch: AppDispatch = useDispatch();
+  const LobbyInfo = useSelector((state: RootState) => state.lobbyInfo);
   useEffect(() => {
     socket.emit(
       "game-join",
@@ -14,13 +19,11 @@ function App() {
     socket.emit("sidebar-update");
     socket.emit("my-deck-update");
     socket.emit("map-update");
-  }, []);
+    dispatch(fetchLobbyInfo());
+  }, [dispatch]);
 
-  socket.on("gameLobby-info", (info) => {
-    console.log(info);
-  });
   socket.on("connect", () => {
-    console.log(socket.id);
+    // console.log(socket.id);
   });
 
   return (

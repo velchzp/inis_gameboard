@@ -1,30 +1,36 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { HexagonState } from "../../types/types";
 import { IMapUiInfo } from "../../types/types";
 import { socket } from "../../sockets/socket";
 
 export const fetchHexagons = createAsyncThunk(
   "hexagons/fetchHexagons",
   async () => {
-    return new Promise<IMapUiInfo["hexGrid"]>((resolve) => {
+    return new Promise<IMapUiInfo>((resolve) => {
       socket.on("map-update", (mapInfo: IMapUiInfo) => {
-        resolve(mapInfo.hexGrid);
+        resolve(mapInfo);
       });
     });
   }
 );
 
-const initialState: HexagonState = {
-  hexagons: [],
+const initialState: IMapUiInfo = {
+  capital: null,
+  holiday: null,
+  terLeft: 0,
+  hexGrid: [],
 };
 
 const hexagonsSlice = createSlice({
   name: "hexagons",
   initialState,
-  reducers: {}, // You can have other synchronous reducers here if needed
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchHexagons.fulfilled, (state, action) => {
-      state.hexagons = action.payload;
+      const { capital, holiday, terLeft, hexGrid } = action.payload;
+      state.capital = capital;
+      state.holiday = holiday;
+      state.terLeft = terLeft;
+      state.hexGrid = hexGrid;
     });
   },
 });

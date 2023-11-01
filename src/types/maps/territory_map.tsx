@@ -24,7 +24,7 @@ const Swamp_ter: Territory = {
   title: "Swamp",
   cardId: Swamp.id,
   description: "Can't place citadel",
-  field_color: "yellow",
+  field_color: "#07B898",
 };
 
 export const Hills_ter: Territory = {
@@ -54,7 +54,7 @@ const Forest_ter: Territory = {
   title: "Forest",
   cardId: Forest.id,
   description: "",
-  field_color: "yellow",
+  field_color: "#009017",
 };
 const Gates_ter: Territory = {
   id: "df9e1676-aa00-42ce-b6f3-a80cb3a32ba7",
@@ -79,7 +79,7 @@ const Wasteland_ter: Territory = {
   title: "Wasteland",
   cardId: Wasteland.id,
   description: "",
-  field_color: "yellow",
+  field_color: "#D4E13A",
 };
 
 const Meadow_ter: Territory = {
