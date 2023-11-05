@@ -7,12 +7,8 @@ import { playersMap } from "../../types/maps/players_map";
 export const HexGrid = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const MapInfo = useSelector((state: RootState) => state.hexagons);
-  const LobbyInfo = useSelector((state: RootState) => state.lobbyInfo);
 
   useEffect(() => {
-    console.log(MapInfo);
-    console.log(LobbyInfo);
-
     if (!canvasRef.current) {
       return;
     }

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "./redux/store";
 import { fetchLobbyInfo } from "./redux/slices/LobbyInfoSlice";
 import { fetchHexagons } from "./redux/slices/hexagonsSlice";
+import { fetchSidebarInfo } from "./redux/slices/SideBarSlice";
 
 function App() {
   const dispatch: AppDispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
 
     dispatch(fetchLobbyInfo());
     dispatch(fetchHexagons());
+    dispatch(fetchSidebarInfo());
   }, [dispatch]);
 
   socket.on("connect", () => {

@@ -2,11 +2,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import hexagonsReducer from "./slices/hexagonsSlice";
 import lobbyInfoReducer from "./slices/LobbyInfoSlice";
+import SideBarSlice from "./slices/SideBarSlice";
 
 export const store = configureStore({
   reducer: {
     hexagons: hexagonsReducer,
     lobbyInfo: lobbyInfoReducer,
+    sideBar: SideBarSlice,
   },
 });
 

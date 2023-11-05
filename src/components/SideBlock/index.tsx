@@ -3,22 +3,18 @@ import "./SideBlock.css";
 import { PlayersInfo } from "../PlayersInfo";
 import { socket } from "../../sockets/socket";
 import { ISidebarUiInfo, Player } from "../../types/types";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 export const SideBlock = () => {
   const [direction, setDirection] = useState("CLOCKWISE");
   const [players, setPlayers] = useState<ISidebarUiInfo["players"]>([]);
+  const SideBarInfo = useSelector((state: RootState) => state.sideBar);
 
   useEffect(() => {
-    socket.on("sidebar-update", (data: ISidebarUiInfo) => {
-      setPlayers(data.players);
-      setDirection(data.turnDirection);
-    });
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      socket.off("sidebar-update");
-    };
-  }, []);
+    setPlayers(SideBarInfo.players);
+    setDirection(SideBarInfo.turnDirection);
+  });
 
   return (
     <div className="wrapper">
