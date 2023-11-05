@@ -7,8 +7,10 @@ import { playersMap } from "../../types/maps/players_map";
 export const HexGrid = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const MapInfo = useSelector((state: RootState) => state.hexagons);
-
+  const SideBarInfo = useSelector((state: RootState) => state.sideBar);
   useEffect(() => {
+    console.log(SideBarInfo);
+    console.log(MapInfo);
     if (!canvasRef.current) {
       return;
     }
@@ -24,9 +26,10 @@ export const HexGrid = () => {
     MapInfo.hexGrid.forEach((hexagon) => {
       const { q, r, field } = hexagon;
       const territory = territoryMap?.get(field.territoryId);
-      // const player1_clans =
-      //   field.playerClans["6dd6246a-f15b-43f8-bd67-5a38aa91184e"];
-      // console.log(player1_clans);
+      const player1_clans = field.playerClans[SideBarInfo.players[0].id];
+      const player2_clans = field.playerClans[SideBarInfo.players[1].id];
+      const player3_clans = field.playerClans[SideBarInfo.players[2].id];
+
       if (!territory) {
         return;
       }
@@ -72,18 +75,18 @@ export const HexGrid = () => {
         ctx.fillText(hexagon.field.sanctuaryCount.toString(), x + 105, y - 100);
         Add_img(ctx, "/chapel 1.png", x, y, -50, -110);
       }
+      if (player1_clans && player1_clans > 0) {
+        Add_Clans(ctx, x - 120, y + 20, "blue", player1_clans);
+      }
+      if (player2_clans > 0) {
+        Add_Clans(ctx, x - 45, y + 20, "red", player2_clans);
+      }
+      if (player3_clans > 0) {
+        Add_Clans(ctx, x + 30, y + 20, "purple", player3_clans);
+      }
     });
   }, [MapInfo]);
 
-  // if (player1_clans && player1_clans > 0) {
-  //   Add_Clans(ctx, x - 120, y + 20, "blue", player1_clans);
-  // }
-  // if (player2_clans > 0) {
-  //   Add_Clans(ctx, x - 45, y + 20, "red", player2_clans);
-  // }
-  // if (player3_clans > 0) {
-  //   Add_Clans(ctx, x + 30, y + 20, "purple", player3_clans);
-  // }
   // if (player4_clans > 0) {
   //   Add_Clans(ctx, x + 110, y + 20, "black", player4_clans);
   // }
