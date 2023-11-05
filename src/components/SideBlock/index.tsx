@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./SideBlock.css";
 import { PlayersInfo } from "../PlayersInfo";
 import { socket } from "../../sockets/socket";

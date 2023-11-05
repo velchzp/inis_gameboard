@@ -127,7 +127,7 @@ const Valley_ter: Territory = {
   title: "Valley",
   cardId: Valley.id,
   description: "",
-  field_color: "yellow",
+  field_color: "#009017",
 };
 
 const Plains_ter: Territory = {

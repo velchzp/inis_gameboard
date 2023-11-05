@@ -6,10 +6,12 @@ import { Board } from "./pages/Board";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "./redux/store";
 import { fetchLobbyInfo } from "./redux/slices/LobbyInfoSlice";
+import { fetchHexagons } from "./redux/slices/hexagonsSlice";
 
 function App() {
   const dispatch: AppDispatch = useDispatch();
   const LobbyInfo = useSelector((state: RootState) => state.lobbyInfo);
+
   useEffect(() => {
     socket.emit(
       "game-join",
@@ -19,7 +21,10 @@ function App() {
     socket.emit("sidebar-update");
     socket.emit("my-deck-update");
     socket.emit("map-update");
+    socket.emit("allPlayers-info");
+
     dispatch(fetchLobbyInfo());
+    dispatch(fetchHexagons());
   }, [dispatch]);
 
   socket.on("connect", () => {

@@ -1,19 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
-import { socket } from "../../sockets/socket";
-import { IMapUiInfo, axialCoordinates, Field } from "../../types/types";
+import { useEffect, useRef } from "react";
 import { territoryMap } from "../../types/maps/territory_map";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../../redux/store";
-import { fetchHexagons } from "../../redux/slices/hexagonsSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { playersMap } from "../../types/maps/players_map";
 
 export const HexGrid = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const dispatch: AppDispatch = useDispatch();
   const MapInfo = useSelector((state: RootState) => state.hexagons);
   const LobbyInfo = useSelector((state: RootState) => state.lobbyInfo);
 
   useEffect(() => {
-    dispatch(fetchHexagons());
     console.log(MapInfo);
     console.log(LobbyInfo);
 
@@ -31,14 +27,18 @@ export const HexGrid = () => {
     const rad = 200;
     MapInfo.hexGrid.forEach((hexagon) => {
       const { q, r, field } = hexagon;
-      const territory = territoryMap.get(field.territoryId);
+      const territory = territoryMap?.get(field.territoryId);
+      // const player1_clans =
+      //   field.playerClans["6dd6246a-f15b-43f8-bd67-5a38aa91184e"];
+      // console.log(player1_clans);
       if (!territory) {
         return;
       }
+
       const a = (2 * Math.PI) / 6;
       let x = canvas.width / 2 + rad * (3 / 2) * r;
       let y = canvas.height / 2 + rad * Math.sqrt(3) * (q + r / 2);
-      ctx.fillStyle = territory.field_color;
+      ctx.fillStyle = territory?.field_color;
 
       ctx.beginPath();
       for (var i = 0; i < 6; i++) {
@@ -77,9 +77,9 @@ export const HexGrid = () => {
         Add_img(ctx, "/chapel 1.png", x, y, -50, -110);
       }
     });
-  }, [dispatch, MapInfo]);
+  }, [MapInfo]);
 
-  // if (player1_clans > 0) {
+  // if (player1_clans && player1_clans > 0) {
   //   Add_Clans(ctx, x - 120, y + 20, "blue", player1_clans);
   // }
   // if (player2_clans > 0) {

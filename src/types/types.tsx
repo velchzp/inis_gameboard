@@ -2,6 +2,7 @@ import { playerAction } from "./Enums";
 import { Card_type, Timing_to_play, Badge, StartStructure } from "./Enums";
 
 export interface Player {
+  id: string;
   username: string;
   mmr: number;
   deck: {
@@ -21,6 +22,7 @@ export interface Player {
 
 export interface ISidebarUiInfo {
   players: {
+    id: string;
     username: string;
     mmr: number;
     deck: {
@@ -63,12 +65,14 @@ export type axialCoordinates = {
   r: number;
 };
 
-export interface Field {
+export interface IField {
   territoryId: string;
   sanctuaryCount: number;
   citadelsCount: number;
-  playersClans: Map<string, number>;
   leaderPlayerId: string | null;
+  playerClans: {
+    [k: string]: number;
+  };
 }
 
 export interface IMapUiInfo {
@@ -77,7 +81,7 @@ export interface IMapUiInfo {
   hexGrid: {
     q: number;
     r: number;
-    field: Field;
+    field: IField;
   }[];
   terLeft: number;
 }
@@ -96,5 +100,21 @@ export interface LobbyInfo {
     gameId: string;
     playerId: string;
     socket: string;
+  }[];
+}
+
+export interface IMeUiInfo {
+  id: string;
+  username: string;
+  mmr: number;
+  color?: string;
+}
+
+export interface IPlayersUiInfo {
+  players: {
+    id: string;
+    username: string;
+    mmr: number;
+    color?: string;
   }[];
 }

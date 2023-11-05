@@ -1,4 +1,3 @@
-import React from "react";
 import "./CardsBlock.css";
 import { Box } from "@mui/material";
 import { socket } from "../../sockets/socket";
