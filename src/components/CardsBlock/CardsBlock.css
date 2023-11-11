@@ -6,35 +6,35 @@
 }
 .epos_cards {
   display: flex;
-  margin-top: 10px;
+
   width: 30%;
   justify-content: center;
   /* border: 2px solid black; */
 }
 .actions_cards {
   display: flex;
-  margin-top: 10px;
   width: 40%;
   justify-content: center;
   /* border: 2px solid black; */
 }
 .advantage_cards {
   display: flex;
-  margin-top: 10px;
+
   width: 30%;
   justify-content: center;
   /* border: 2px solid black; */
 }
-.card {
-  height: 220px;
-  margin: 0;
-  width: 140px;
+
+.card_img {
+  height: 200px;
+  width: 130px;
   transition: transform 0.3s, box-shadow 0.3s;
+  margin-top: 0px;
   position: relative;
   z-index: 1;
 }
 
-.card:hover {
+.card_img:hover {
   transform: scale(1.7) translateY(-57px);
   z-index: 2;
 }

@@ -1,104 +1,76 @@
 import "./CardsBlock.css";
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { socket } from "../../sockets/socket";
 import { useEffect, useState } from "react";
-import { IMyDeckUiInfo } from "../../types/types";
 import { cardActionMap } from "../../types/maps/actioncards_map";
-import { Card } from "../../types/types";
+import {
+  Card,
+  IPlayerCardInput,
+  ICardParams,
+  axialCoordinates,
+  IMyDeckUiInfo,
+} from "../../types/types";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchHexagons } from "../../redux/slices/hexagonsSlice";
+import { fetchSidebarInfo } from "../../redux/slices/SideBarSlice";
+import { AppDispatch } from "../../redux/store";
+import { CardPlay } from "../CardPlay";
+import { setCardPlay } from "../../redux/slices/CardPlaySlice";
 
 export const CardsBlock = () => {
   const [action_cards_ids, setAction_cards_ids] = useState<string[]>([]);
   const [epos, setEpos_cards_ids] = useState<string[]>([]);
   const [adv_cards_ids, setAdv_cards_ids] = useState<string[]>([]);
 
+  const [isCardPlay, setIsCardPlay] = useState(false);
+  const [cardID, setCardID] = useState<string>("");
+  const dispatch: AppDispatch = useDispatch();
+
+  const handleCardClick = (cardID: string) => {
+    const clickedCard = cardActionMap.get(cardID); // Get the card object
+    setIsCardPlay(true);
+    setCardID(cardID);
+    dispatch(setCardPlay({ isCardPlay: true, card: clickedCard }));
+  };
+
   useEffect(() => {
     socket.on("my-deck-update", (deckinfo: IMyDeckUiInfo) => {
       setAction_cards_ids(deckinfo.ActionCards);
       setEpos_cards_ids(deckinfo.EposCards);
       setAdv_cards_ids(deckinfo.AdvantagesCards);
+      // console.log(deckinfo);
     });
   }, []);
-  // console.log(action_cards_ids);
-  // console.log(cardActionMap.get(action_cards_ids[0]));
+
   return (
     <div className="cards_wrapper">
-      <Box className="epos_cards">
-        {/* <img
-          src={process.env.PUBLIC_URL + "/epos.png"}
-          alt=""
-          className="card"
-          id="card_epos"
-        />
-        <img
-          src={process.env.PUBLIC_URL + "/epos.png"}
-          alt=""
-          className="card"
-          id="card_epos"
-        />
-        <img
-          src={process.env.PUBLIC_URL + "/epos.png"}
-          alt=""
-          className="card"
-          id="card_epos"
-        />
-        <img
-          src={process.env.PUBLIC_URL + "/epos.png"}
-          alt=""
-          className="card"
-          id="card_epos"
-        />
-        <img
-          src={process.env.PUBLIC_URL + "/epos.png"}
-          alt=""
-          className="card"
-          id="card_epos"
-        />
-        <img
-          src={process.env.PUBLIC_URL + "/epos.png"}
-          alt=""
-          className="card"
-          id="card_epos"
-        /> */}
-      </Box>
+      <Box className="epos_cards">{/* Epos Cards content goes here */}</Box>
       <Box className="actions_cards">
         {action_cards_ids ? (
-          action_cards_ids
-            .slice(0, action_cards_ids.length)
-            .map((card, index) => (
+          action_cards_ids.map((cardId, index) => (
+            <IconButton
+              className="card"
+              onClick={() => handleCardClick(cardId)}
+              key={cardId}
+            >
               <img
                 src={
-                  process.env.PUBLIC_URL +
-                  cardActionMap.get(action_cards_ids[index])?.img_url
+                  process.env.PUBLIC_URL + cardActionMap.get(cardId)?.img_url
                 }
                 alt=""
-                className="card"
-                key={action_cards_ids[index]}
+                className="card_img"
+                key={cardId}
               />
-            ))
+            </IconButton>
+          ))
         ) : (
           <p>CardName</p>
         )}
       </Box>
       <Box className="advantage_cards">
-        {/* <img
-          src={process.env.PUBLIC_URL + "/advantage.png"}
-          alt=""
-          className="card"
-          id="card_adv"
-        />
-        <img
-          src={process.env.PUBLIC_URL + "/advantage.png"}
-          alt=""
-          className="card"
-          id="card_adv"
-        />
-        <img
-          src={process.env.PUBLIC_URL + "/advantage.png"}
-          alt=""
-          className="card"
-          id="card_adv"
-        /> */}
+        {/* Advantage Cards content goes here */}
       </Box>
+      {/* {isCardPlay && card ? <CardPlay {...card}></CardPlay> : <p></p>} */}
     </div>
   );
 };

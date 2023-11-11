@@ -118,3 +118,22 @@ export interface IPlayersUiInfo {
     color?: string;
   }[];
 }
+
+export interface ICardParams {
+  axial?: axialCoordinates | axialCoordinates[];
+  targetPlayerId?: string;
+  axialToNum?:
+    | { axial: axialCoordinates; num: number }[]
+    | { axial: axialCoordinates; num: number };
+  targetCardId?: string;
+  cardVariation?: number;
+}
+export interface IPlayerCardInput {
+  cardId: string;
+  params?: ICardParams;
+}
+
+export interface IPlayCard {
+  isCardPlay: boolean;
+  card: Card | null;
+}

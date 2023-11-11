@@ -1,16 +1,42 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { territoryMap } from "../../types/maps/territory_map";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../redux/store";
 import { playersMap } from "../../types/maps/players_map";
+import { socket } from "../../sockets/socket";
+import { axialCoordinates } from "../../types/types";
+import { AppDispatch } from "../../redux/store";
+import { setCardPlay } from "../../redux/slices/CardPlaySlice";
+import { fetchHexagons } from "../../redux/slices/hexagonsSlice";
+import { fetchSidebarInfo } from "../../redux/slices/SideBarSlice";
 
 export const HexGrid = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const MapInfo = useSelector((state: RootState) => state.hexagons);
   const SideBarInfo = useSelector((state: RootState) => state.sideBar);
+  const { isCardPlay, card } = useSelector(
+    (state: RootState) => state.cardPlay
+  );
+  const dispatch: AppDispatch = useDispatch();
+  const [axial, setAxial] = useState<axialCoordinates | axialCoordinates[]>({
+    q: 0,
+    r: 0,
+  });
   useEffect(() => {
-    console.log(SideBarInfo);
-    console.log(MapInfo);
+    if (card) {
+      socket.emit("player-card-info", {
+        cardId: card.id,
+      });
+    }
+    socket.on("player-card-info", (data) => {
+      setAxial(data.axial);
+    });
+    console.log(axial);
+
+    // console.log(SideBarInfo);
+    // console.log(MapInfo);
+    console.log(isCardPlay);
+
     if (!canvasRef.current) {
       return;
     }
@@ -44,9 +70,9 @@ export const HexGrid = () => {
         ctx.lineTo(x + rad * Math.cos(a * i), y + rad * Math.sin(a * i));
       }
       ctx.closePath();
+
       ctx.fill();
       ctx.strokeStyle = "black";
-
       ctx.stroke();
       ctx.fillStyle = "black";
       ctx.font = "19px Arial";
@@ -85,7 +111,40 @@ export const HexGrid = () => {
         Add_Clans(ctx, x + 30, y + 20, "purple", player3_clans);
       }
     });
-  }, [MapInfo]);
+    if (isCardPlay) {
+      const a = (2 * Math.PI) / 6;
+      let x = canvas.width / 2 + rad * (3 / 2) * 0;
+      let y = canvas.height / 2 + rad * Math.sqrt(3) * (0 + 0 / 2);
+      ctx.strokeStyle = "black";
+      ctx.fillStyle = "transparent";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(x, y, 20, 0, 2 * Math.PI);
+      ctx.closePath();
+      ctx.stroke();
+      canvas.addEventListener("click", function (event) {
+        // Get the mouse coordinates relative to the canvas
+        var mouseX = event.clientX - canvas.getBoundingClientRect().left;
+        var mouseY = event.clientY - canvas.getBoundingClientRect().top;
+
+        // Check if the click is within the circle's bounds
+        var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+        if (distance <= 20) {
+          if (Array.isArray(axial) && card) {
+            socket.emit("player-card-season", {
+              cardId: card.id,
+              params: {
+                axial: axial[0],
+              },
+            });
+          }
+          dispatch(fetchHexagons());
+          dispatch(fetchSidebarInfo());
+          dispatch(setCardPlay({ isCardPlay: false, card: null }));
+        }
+      });
+    }
+  }, [card, MapInfo, isCardPlay]);
 
   // if (player4_clans > 0) {
   //   Add_Clans(ctx, x + 110, y + 20, "black", player4_clans);
