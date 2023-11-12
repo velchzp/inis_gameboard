@@ -25,10 +25,10 @@ export const HexGrid = () => {
   });
 
   useEffect(() => {
-    console.log("Second useEffect");
-    console.log(CardInfo);
+    console.log("useEffect called");
+    // console.log(CardInfo);
 
-    console.log(isCardPlay);
+    // console.log(isCardPlay);
 
     if (!canvasRef.current) {
       return;
@@ -104,6 +104,7 @@ export const HexGrid = () => {
         Add_Clans(ctx, x + 30, y + 20, "purple", player3_clans);
       }
     });
+    console.log(isCardPlay);
     if (isCardPlay) {
       const a = (2 * Math.PI) / 6;
       let x = canvas.width / 2 + rad * (3 / 2) * 0;
@@ -115,7 +116,9 @@ export const HexGrid = () => {
       ctx.arc(x, y, 20, 0, 2 * Math.PI);
       ctx.closePath();
       ctx.stroke();
-      canvas.addEventListener("click", function (event) {
+
+      const handleCanvasClick = (event: MouseEvent) => {
+        // console.log("clicked card");
         // Get the mouse coordinates relative to the canvas
         var mouseX = event.clientX - canvas.getBoundingClientRect().left;
         var mouseY = event.clientY - canvas.getBoundingClientRect().top;
@@ -135,9 +138,16 @@ export const HexGrid = () => {
         dispatch(fetchHexagons());
         dispatch(fetchSidebarInfo());
         dispatch(setCardPlay({ isCardPlay: false, card: null }));
-      });
+      }
+
+      canvas.addEventListener("click", handleCanvasClick);
+      return () => {
+        canvas.removeEventListener("click", handleCanvasClick);
+      };
     }
   }, [MapInfo, isCardPlay, CardInfo]);
+
+
   function Add_img(
     ctx: CanvasRenderingContext2D,
     scr: string,
