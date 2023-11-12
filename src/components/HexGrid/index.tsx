@@ -137,7 +137,7 @@ export const HexGrid = () => {
         dispatch(setCardPlay({ isCardPlay: false, card: null }));
       });
     }
-  }, [MapInfo, isCardPlay]);
+  }, [MapInfo, isCardPlay, CardInfo]);
   function Add_img(
     ctx: CanvasRenderingContext2D,
     scr: string,

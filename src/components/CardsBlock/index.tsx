@@ -27,7 +27,7 @@ export const CardsBlock = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const handleCardClick = (cardID: string) => {
-    const clickedCard = cardActionMap.get(cardID); // Get the card object
+    const clickedCard = cardActionMap.get(cardID);
     setIsCardPlay(true);
     setCardID(cardID);
     dispatch(setCardPlay({ isCardPlay: true, card: clickedCard }));
