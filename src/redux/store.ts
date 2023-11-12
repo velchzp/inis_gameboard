@@ -4,6 +4,7 @@ import hexagonsReducer from "./slices/hexagonsSlice";
 import lobbyInfoReducer from "./slices/LobbyInfoSlice";
 import SideBarSlice from "./slices/SideBarSlice";
 import CardPlaySlice from "./slices/CardPlaySlice";
+import cardsReducer from "./slices/CardParamsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     lobbyInfo: lobbyInfoReducer,
     sideBar: SideBarSlice,
     cardPlay: CardPlaySlice,
+    cards: cardsReducer,
   },
 });
 

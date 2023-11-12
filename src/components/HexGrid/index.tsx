@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../redux/store";
 import { playersMap } from "../../types/maps/players_map";
 import { socket } from "../../sockets/socket";
-import { axialCoordinates } from "../../types/types";
+import { axialCoordinates, ICardParams } from "../../types/types";
 import { AppDispatch } from "../../redux/store";
 import { setCardPlay } from "../../redux/slices/CardPlaySlice";
 import { fetchHexagons } from "../../redux/slices/hexagonsSlice";
@@ -14,6 +14,7 @@ export const HexGrid = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const MapInfo = useSelector((state: RootState) => state.hexagons);
   const SideBarInfo = useSelector((state: RootState) => state.sideBar);
+  const CardInfo = useSelector((state: RootState) => state.cards);
   const { isCardPlay, card } = useSelector(
     (state: RootState) => state.cardPlay
   );
@@ -22,19 +23,11 @@ export const HexGrid = () => {
     q: 0,
     r: 0,
   });
-  useEffect(() => {
-    if (card) {
-      socket.emit("player-card-info", {
-        cardId: card.id,
-      });
-    }
-    socket.on("player-card-info", (data) => {
-      setAxial(data.axial);
-    });
-    console.log(axial);
 
-    // console.log(SideBarInfo);
-    // console.log(MapInfo);
+  useEffect(() => {
+    console.log("Second useEffect");
+    console.log(CardInfo);
+
     console.log(isCardPlay);
 
     if (!canvasRef.current) {
@@ -130,26 +123,21 @@ export const HexGrid = () => {
         // Check if the click is within the circle's bounds
         var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
         if (distance <= 20) {
-          if (Array.isArray(axial) && card) {
+          if (Array.isArray(CardInfo.axial) && card) {
             socket.emit("player-card-season", {
               cardId: card.id,
               params: {
-                axial: axial[0],
+                axial: CardInfo.axial[0],
               },
             });
           }
-          dispatch(fetchHexagons());
-          dispatch(fetchSidebarInfo());
-          dispatch(setCardPlay({ isCardPlay: false, card: null }));
         }
+        dispatch(fetchHexagons());
+        dispatch(fetchSidebarInfo());
+        dispatch(setCardPlay({ isCardPlay: false, card: null }));
       });
     }
-  }, [card, MapInfo, isCardPlay]);
-
-  // if (player4_clans > 0) {
-  //   Add_Clans(ctx, x + 110, y + 20, "black", player4_clans);
-  // }
-
+  }, [MapInfo, isCardPlay]);
   function Add_img(
     ctx: CanvasRenderingContext2D,
     scr: string,

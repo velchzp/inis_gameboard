@@ -126,7 +126,7 @@ export interface ICardParams {
     | { axial: axialCoordinates; num: number }[]
     | { axial: axialCoordinates; num: number };
   targetCardId?: string;
-  cardVariation?: number;
+  CardVariation?: number;
 }
 export interface IPlayerCardInput {
   cardId: string;

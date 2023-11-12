@@ -16,7 +16,7 @@ import { fetchSidebarInfo } from "../../redux/slices/SideBarSlice";
 import { AppDispatch } from "../../redux/store";
 import { CardPlay } from "../CardPlay";
 import { setCardPlay } from "../../redux/slices/CardPlaySlice";
-
+import { fetchCardInfo } from "../../redux/slices/CardParamsSlice";
 export const CardsBlock = () => {
   const [action_cards_ids, setAction_cards_ids] = useState<string[]>([]);
   const [epos, setEpos_cards_ids] = useState<string[]>([]);
@@ -31,6 +31,11 @@ export const CardsBlock = () => {
     setIsCardPlay(true);
     setCardID(cardID);
     dispatch(setCardPlay({ isCardPlay: true, card: clickedCard }));
+
+    socket.emit("player-card-info", {
+      cardId: cardID,
+    });
+    dispatch(fetchCardInfo());
   };
 
   useEffect(() => {
