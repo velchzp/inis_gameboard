@@ -120,13 +120,26 @@ export interface IPlayersUiInfo {
 }
 
 export interface ICardParams {
-  axial?: axialCoordinates | axialCoordinates[];
+  axial?: axialCoordinates[];
   targetPlayerId?: string;
   axialToNum?:
     | { axial: axialCoordinates; num: number }[]
     | { axial: axialCoordinates; num: number };
   targetCardId?: string;
   CardVariation?: number;
+}
+
+export interface ICardOperationResponse {
+  axial?: axialCoordinates[];
+  cardIds?: string[];
+  maxTerClicks?: number;
+  maxCardClicks?: number;
+  maxTargetPlayerClicks?: number;
+  axialToNum?: { axial: axialCoordinates; num: number }[];
+  axialToPlayerId?: {
+    axialCoordinates: axialCoordinates;
+    playerIds: string[];
+  }[];
 }
 export interface IPlayerCardInput {
   cardId: string;

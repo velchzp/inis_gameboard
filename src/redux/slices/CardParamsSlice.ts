@@ -1,24 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { ICardParams } from "../../types/types";
+import { ICardParams, ICardOperationResponse } from "../../types/types";
 import { socket } from "../../sockets/socket";
 
 export const fetchCardInfo = createAsyncThunk(
   "cards/fetchCardInfo",
   async () => {
-    return new Promise<ICardParams>((resolve) => {
-      socket.on("player-card-info", (cardInfo: ICardParams) => {
+    return new Promise<ICardOperationResponse>((resolve) => {
+      socket.on("player-card-info", (cardInfo: ICardOperationResponse) => {
         resolve(cardInfo);
       });
     });
   }
 );
 
-const initialState: ICardParams = {
-  axial: undefined,
-  targetPlayerId: undefined,
-  axialToNum: undefined,
-  targetCardId: undefined,
-  CardVariation: undefined,
+const initialState: ICardOperationResponse = {
+  axial: [],
+  cardIds: [],
+  maxTerClicks: 0,
+  maxCardClicks: 0,
+  maxTargetPlayerClicks: 0,
+  axialToNum: [],
+  axialToPlayerId: [],
 };
 
 const cardsSlice = createSlice({
@@ -27,13 +29,22 @@ const cardsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchCardInfo.fulfilled, (state, action) => {
-      const { axial, targetPlayerId, axialToNum, targetCardId, CardVariation } =
-        action.payload;
+      const {
+        axial,
+        cardIds,
+        maxCardClicks,
+        maxTerClicks,
+        maxTargetPlayerClicks,
+        axialToNum,
+        axialToPlayerId,
+      } = action.payload;
       state.axial = axial;
-      state.targetPlayerId = targetPlayerId;
+      state.axialToPlayerId = axialToPlayerId;
       state.axialToNum = axialToNum;
-      state.targetCardId = targetCardId;
-      state.CardVariation = CardVariation;
+      state.maxCardClicks = maxCardClicks;
+      state.maxTerClicks = maxTerClicks;
+      state.maxTargetPlayerClicks = maxTargetPlayerClicks;
+      state.cardIds = cardIds;
     });
   },
 });

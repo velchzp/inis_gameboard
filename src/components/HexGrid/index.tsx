@@ -105,48 +105,73 @@ export const HexGrid = () => {
       }
     });
     console.log(isCardPlay);
-    if (isCardPlay) {
+    if (
+      isCardPlay &&
+      Array.isArray(CardInfo.axial) &&
+      CardInfo.axial.length > 0 &&
+      CardInfo.axial[0] !== undefined
+    ) {
       const a = (2 * Math.PI) / 6;
-      let x = canvas.width / 2 + rad * (3 / 2) * 0;
-      let y = canvas.height / 2 + rad * Math.sqrt(3) * (0 + 0 / 2);
-      ctx.strokeStyle = "black";
-      ctx.fillStyle = "transparent";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(x, y, 20, 0, 2 * Math.PI);
-      ctx.closePath();
-      ctx.stroke();
+      for (let i = 0; i < CardInfo.axial.length; i++) {
+        let x = canvas.width / 2 + rad * (3 / 2) * CardInfo.axial[i].r;
+        let y =
+          canvas.height / 2 +
+          rad * Math.sqrt(3) * (CardInfo.axial[i].q + CardInfo.axial[i].r / 2);
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "transparent";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.stroke();
+      }
 
       const handleCanvasClick = (event: MouseEvent) => {
-        // console.log("clicked card");
-        // Get the mouse coordinates relative to the canvas
         var mouseX = event.clientX - canvas.getBoundingClientRect().left;
         var mouseY = event.clientY - canvas.getBoundingClientRect().top;
 
-        // Check if the click is within the circle's bounds
-        var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
-        if (distance <= 20) {
-          if (Array.isArray(CardInfo.axial) && card) {
-            socket.emit("player-card-season", {
-              cardId: card.id,
-              params: {
-                axial: CardInfo.axial[0],
-              },
-            });
+        if (
+          isCardPlay &&
+          Array.isArray(CardInfo.axial) &&
+          CardInfo.axial.length > 0 &&
+          CardInfo.axial[0] !== undefined
+        ) {
+          for (let i = 0; i < CardInfo.axial.length; i++) {
+            let x = canvas.width / 2 + rad * (3 / 2) * CardInfo.axial[i].r;
+            let y =
+              canvas.height / 2 +
+              rad *
+                Math.sqrt(3) *
+                (CardInfo.axial[i].q + CardInfo.axial[i].r / 2);
+
+            var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+            if (distance <= 20) {
+              if (Array.isArray(CardInfo.axial) && card) {
+                socket.emit("player-card-season", {
+                  cardId: card.id,
+                  params: {
+                    axial: CardInfo.axial[i],
+                  },
+                });
+              }
+              dispatch(fetchHexagons());
+              dispatch(fetchSidebarInfo());
+              dispatch(setCardPlay({ isCardPlay: false, card: null }));
+              break; // Exit the loop once a circle is clicked
+            }
           }
         }
-        dispatch(fetchHexagons());
-        dispatch(fetchSidebarInfo());
-        dispatch(setCardPlay({ isCardPlay: false, card: null }));
-      }
+      };
 
+      // Add the event listener outside the loop
       canvas.addEventListener("click", handleCanvasClick);
+
+      // Cleanup function
       return () => {
         canvas.removeEventListener("click", handleCanvasClick);
       };
     }
   }, [MapInfo, isCardPlay, CardInfo]);
-
 
   function Add_img(
     ctx: CanvasRenderingContext2D,
