@@ -108,8 +108,7 @@ export const HexGrid = () => {
     if (
       isCardPlay &&
       Array.isArray(CardInfo.axial) &&
-      CardInfo.axial.length > 0 &&
-      CardInfo.axial[0] !== undefined
+      CardInfo.axial.length > 0
     ) {
       const a = (2 * Math.PI) / 6;
       for (let i = 0; i < CardInfo.axial.length; i++) {
@@ -133,8 +132,7 @@ export const HexGrid = () => {
         if (
           isCardPlay &&
           Array.isArray(CardInfo.axial) &&
-          CardInfo.axial.length > 0 &&
-          CardInfo.axial[0] !== undefined
+          CardInfo.axial.length > 0
         ) {
           for (let i = 0; i < CardInfo.axial.length; i++) {
             let x = canvas.width / 2 + rad * (3 / 2) * CardInfo.axial[i].r;
