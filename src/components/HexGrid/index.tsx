@@ -9,12 +9,14 @@ import { AppDispatch } from "../../redux/store";
 import { setCardPlay } from "../../redux/slices/CardPlaySlice";
 import { fetchHexagons } from "../../redux/slices/hexagonsSlice";
 import { fetchSidebarInfo } from "../../redux/slices/SideBarSlice";
+import { CardParams } from "../../types/Enums";
 
 export const HexGrid = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const MapInfo = useSelector((state: RootState) => state.hexagons);
   const SideBarInfo = useSelector((state: RootState) => state.sideBar);
   const CardInfo = useSelector((state: RootState) => state.cards);
+  const [CardInputParams, setCardInputParams] = useState<ICardParams | null>();
   const { isCardPlay, card } = useSelector(
     (state: RootState) => state.cardPlay
   );
@@ -23,6 +25,20 @@ export const HexGrid = () => {
     q: 0,
     r: 0,
   });
+
+  useEffect(() => {
+    console.log(CardInputParams);
+    if (card && CardInputParams) {
+      socket.emit("player-card-season", {
+        cardId: card.id,
+        params: CardInputParams,
+      });
+    }
+    dispatch(fetchHexagons());
+    dispatch(fetchSidebarInfo());
+    dispatch(setCardPlay({ isCardPlay: false, card: null }));
+    setCardInputParams(null);
+  }, [CardInputParams]);
 
   useEffect(() => {
     console.log("useEffect called");
@@ -144,18 +160,16 @@ export const HexGrid = () => {
 
             var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
             if (distance <= 20) {
-              if (Array.isArray(CardInfo.axial) && card) {
-                socket.emit("player-card-season", {
-                  cardId: card.id,
-                  params: {
-                    axial: CardInfo.axial[i],
-                  },
+              if (card?.params?.includes(CardParams.singleAxial)) {
+                setCardInputParams({
+                  singleAxial: CardInfo.axial[i],
                 });
               }
-              dispatch(fetchHexagons());
-              dispatch(fetchSidebarInfo());
-              dispatch(setCardPlay({ isCardPlay: false, card: null }));
-              break; // Exit the loop once a circle is clicked
+              if (card?.params?.includes(CardParams.axial)) {
+                setCardInputParams({
+                  axial: [CardInfo.axial[i]],
+                });
+              }
             }
           }
         }

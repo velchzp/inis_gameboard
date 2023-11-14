@@ -1,4 +1,4 @@
-import { Card_type, Timing_to_play, Badge } from "../Enums";
+import { Card_type, Timing_to_play, Badge, CardParams } from "../Enums";
 import { Card } from "../types";
 
 //Action cards
@@ -11,7 +11,8 @@ export const Sanctuary: Card = {
   description:
     "Build 1 sanctuary on territory with your clans. Take 1 Epos card",
   img_url: "/sanctuary.png",
-} as const;
+  params: [CardParams.singleAxial],
+};
 
 export const NewClans: Card = {
   id: "c1f5ddba-7325-4188-9a36-ff9ef14af22a",
@@ -22,7 +23,8 @@ export const NewClans: Card = {
   description:
     "Add 2 clans on any territory with your clans. Both clans can be added on 1 territory or 2 separate ones",
   img_url: "/NewClans.png",
-} as const;
+  params: [CardParams.axial],
+};
 
 export const Conquest: Card = {
   id: "ddc241a2-2fd1-4926-8860-4eae221b93d4",
@@ -83,7 +85,8 @@ export const Exploration: Card = {
   badge: Badge.Clans,
   description: "",
   img_url: "/Exploration.png",
-} as const;
+  params: [CardParams.singleAxial],
+};
 
 export const Commander: Card = {
   id: "2233b6e1-be5f-4a3d-af68-1aa3c7cfe1b4",
@@ -105,7 +108,8 @@ export const Holiday: Card = {
   badge: Badge.Clans,
   description: "",
   img_url: "/Holiday.png",
-} as const;
+  params: [CardParams.singleAxial],
+};
 
 export const Relocation: Card = {
   id: "bea2a567-9011-493d-9965-7d12b2d4aaf6",
@@ -125,7 +129,8 @@ export const Citadel: Card = {
   badge: Badge.Build,
   description: "",
   img_url: "/Citadel.png",
-} as const;
+  params: [CardParams.singleAxial],
+};
 
 export const Geist: Card = {
   id: "d18d8527-d0aa-47da-b291-7aa222ef3132",

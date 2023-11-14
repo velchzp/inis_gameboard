@@ -1,5 +1,11 @@
 import { playerAction } from "./Enums";
-import { Card_type, Timing_to_play, Badge, StartStructure } from "./Enums";
+import {
+  Card_type,
+  Timing_to_play,
+  Badge,
+  StartStructure,
+  CardParams,
+} from "./Enums";
 
 export interface Player {
   id: string;
@@ -58,6 +64,7 @@ export type Card = {
   trixelCondition?: string;
   secondDescription?: string;
   img_url?: string;
+  params?: CardParams[];
 };
 
 export type axialCoordinates = {
@@ -121,12 +128,11 @@ export interface IPlayersUiInfo {
 
 export interface ICardParams {
   axial?: axialCoordinates[];
+  singleAxial?: axialCoordinates;
   targetPlayerId?: string;
-  axialToNum?:
-    | { axial: axialCoordinates; num: number }[]
-    | { axial: axialCoordinates; num: number };
+  axialToNum?: { axial: axialCoordinates; num: number }[];
   targetCardId?: string;
-  CardVariation?: number;
+  cardVariation?: number;
 }
 
 export interface ICardOperationResponse {

@@ -28,3 +28,11 @@ export enum Badge {
 export enum StartStructure {
   Shrine,
 }
+export enum CardParams {
+  axial,
+  singleAxial,
+  targetPlayerId,
+  axialToNum,
+  targetCardId,
+  cardVariation,
+}
