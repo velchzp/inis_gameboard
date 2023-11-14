@@ -12,6 +12,7 @@ export const Board = () => {
   const { isCardPlay, card } = useSelector(
     (state: RootState) => state.cardPlay
   );
+  window.scrollTo(2700, 3300);
   useEffect(() => {
     // window.scrollTo(2700, 3400);
     // console.log(isCardPlay);
