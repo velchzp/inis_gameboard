@@ -17,7 +17,7 @@ function App() {
     socket.emit(
       "game-join",
       "54a94296-eb0b-45dc-a6f6-544559cf6b8b",
-      "6dd6246a-f15b-43f8-bd67-5a38aa91184e"
+      localStorage.getItem("token")
     );
     socket.emit("sidebar-update");
     socket.emit("my-deck-update");
