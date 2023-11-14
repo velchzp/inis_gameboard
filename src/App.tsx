@@ -14,6 +14,7 @@ function App() {
   const LobbyInfo = useSelector((state: RootState) => state.lobbyInfo);
 
   useEffect(() => {
+    window.scroll;
     socket.emit(
       "game-join",
       "54a94296-eb0b-45dc-a6f6-544559cf6b8b",
@@ -23,7 +24,9 @@ function App() {
     socket.emit("my-deck-update");
     socket.emit("map-update");
     socket.emit("allPlayers-info");
+  });
 
+  useEffect(() => {
     dispatch(fetchLobbyInfo());
     dispatch(fetchHexagons());
     dispatch(fetchSidebarInfo());
