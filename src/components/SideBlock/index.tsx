@@ -9,11 +9,17 @@ import { RootState } from "../../redux/store";
 export const SideBlock = () => {
   const [direction, setDirection] = useState("CLOCKWISE");
   const [players, setPlayers] = useState<ISidebarUiInfo["players"]>([]);
-  const SideBarInfo = useSelector((state: RootState) => state.sideBar);
+  // const SideBarInfo = useSelector((state: RootState) => state.sideBar);
+  const [SideBarInfo, setSideBarInfo] = useState<ISidebarUiInfo>();
 
   useEffect(() => {
-    setPlayers(SideBarInfo.players);
-    setDirection(SideBarInfo.turnDirection);
+    socket.on("sidebar-update", (data) => {
+      setSideBarInfo(data);
+    });
+    if (SideBarInfo) {
+      setPlayers(SideBarInfo.players);
+      setDirection(SideBarInfo.turnDirection);
+    }
   });
 
   return (
