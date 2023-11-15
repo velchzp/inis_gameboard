@@ -3,7 +3,7 @@ import "./Board.css";
 import { SideBlock } from "../../components/SideBlock";
 import { HexGrid } from "../../components/HexGrid";
 import { CardsBlock } from "../../components/CardsBlock";
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { CardPlay } from "../../components/CardPlay";
@@ -26,6 +26,7 @@ export const Board = () => {
         <SideBlock />
       </div>
       <div className="cards_block">
+        <Button variant="contained">Next turn</Button>
         <CardsBlock />
       </div>
     </div>

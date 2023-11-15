@@ -15,15 +15,12 @@ body {
   right: 0;
 }
 .cards_block {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Выравнивание внизу блока */
   position: fixed;
   bottom: 0;
-  height: 200px;
+  height: 300px;
   z-index: 1;
   width: 100%;
-}
-.hex_text {
-  fill: black;
-  font-size: 10px;
-  position: absolute;
-  top: 50%;
 }
