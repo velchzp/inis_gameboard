@@ -7,7 +7,7 @@ import "./PlayersInfo.css";
 
 export const PlayersInfo = (props: Player) => {
   return (
-    <div className="playerblock">
+    <div className={`playerblock ${props.isActive ? "activePlayerClass" : ""}`}>
       <Box className="nicknamebox">
         <Stack className="nickname_stack">
           <PersonIcon style={{ height: 21 }} className="personicon" />
