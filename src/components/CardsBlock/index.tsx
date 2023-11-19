@@ -35,8 +35,14 @@ export const CardsBlock = () => {
     socket.emit("player-card-info", {
       cardId: cardID,
     });
-    dispatch(fetchCardInfo());
   };
+
+  useEffect(() => {
+    socket.emit("game-update");
+    socket.on("game-update", (data) => {
+      console.log(data);
+    });
+  }, []);
 
   useEffect(() => {
     socket.on("my-deck-update", (deckinfo: IMyDeckUiInfo) => {
