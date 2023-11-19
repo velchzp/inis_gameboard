@@ -24,10 +24,6 @@ export const HexGrid = () => {
     (state: RootState) => state.cardPlay
   );
   const dispatch: AppDispatch = useDispatch();
-  const [axial, setAxial] = useState<axialCoordinates | axialCoordinates[]>({
-    q: 0,
-    r: 0,
-  });
 
   useEffect(() => {
     console.log(CardInputParams);
