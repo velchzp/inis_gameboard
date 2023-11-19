@@ -37,13 +37,14 @@ export const CardsBlock = () => {
   const handleCardDealClick = (cardID: string) => {
     console.log(cardID);
     setCardsToDeal((prevSelectedCards) => [...prevSelectedCards, cardID]);
-    console.log("clicked2!");
+    console.log(cardsToDeal);
   };
   const handleConfirmButton = (cardsToDeal: string[]) => {
-    console.log(cardsToDeal);
+    // console.log(cardsToDeal);
     socket.emit("player-card-deal", {
       cardIds: cardsToDeal,
     });
+    setCardsToDeal([]);
   };
 
   useEffect(() => {
