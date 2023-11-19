@@ -23,7 +23,7 @@ function App() {
     socket.emit("my-deck-update");
     socket.emit("map-update");
     socket.emit("allPlayers-info");
-
+    socket.emit("game-update");
     // dispatch(fetchLobbyInfo());
     // dispatch(fetchHexagons());
     // dispatch(fetchSidebarInfo());

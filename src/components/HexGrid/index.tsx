@@ -10,11 +10,7 @@ import { setCardPlay } from "../../redux/slices/CardPlaySlice";
 import { fetchHexagons } from "../../redux/slices/hexagonsSlice";
 import { fetchSidebarInfo } from "../../redux/slices/SideBarSlice";
 import { CardParams } from "../../types/Enums";
-import {
-  IMapUiInfo,
-  ISidebarUiInfo,
-  ICardOperationResponse,
-} from "../../types/types";
+import { IMapUiInfo, ISidebarUiInfo } from "../../types/types";
 
 export const HexGrid = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -22,8 +18,7 @@ export const HexGrid = () => {
   const [MapInfo, setMapInfo] = useState<IMapUiInfo>();
   // const SideBarInfo = useSelector((state: RootState) => state.sideBar);
   const [SideBarInfo, setSideBarInfo] = useState<ISidebarUiInfo>();
-  // const CardInfo = useSelector((state: RootState) => state.cards);
-  const [CardInfo, setCardInfo] = useState<ICardOperationResponse>();
+  const CardInfo = useSelector((state: RootState) => state.cards);
   const [CardInputParams, setCardInputParams] = useState<ICardParams | null>();
   const { isCardPlay, card } = useSelector(
     (state: RootState) => state.cardPlay
@@ -33,20 +28,9 @@ export const HexGrid = () => {
     q: 0,
     r: 0,
   });
+
   useEffect(() => {
-    console.log(isCardPlay);
-    console.log(card);
-    if (card && isCardPlay) {
-      socket.emit("player-card-info", {
-        cardId: card.id,
-      });
-      socket.on("player-card-info", (cardInfo: ICardOperationResponse) => {
-        setCardInfo(cardInfo);
-      });
-    }
-  }, [isCardPlay]);
-  useEffect(() => {
-    // console.log(CardInputParams);
+    console.log(CardInputParams);
     if (card && CardInputParams) {
       socket.emit("player-card-season", {
         cardId: card.id,
@@ -61,11 +45,17 @@ export const HexGrid = () => {
     socket.on("sidebar-update", (data) => {
       setSideBarInfo(data);
     });
-    // console.log(MapInfo);
+    console.log(MapInfo);
+    // dispatch(fetchHexagons());
+    // dispatch(fetchSidebarInfo());
   });
 
   useEffect(() => {
-    // console.log("useEffect called");
+    console.log("useEffect called");
+    // console.log(CardInfo);
+
+    // console.log(isCardPlay);
+
     if (!canvasRef.current) {
       return;
     }
@@ -145,10 +135,9 @@ export const HexGrid = () => {
           Add_Clans(ctx, x + 30, y + 20, "purple", player3_clans);
         }
       });
-      // console.log(isCardPlay);
+      console.log(isCardPlay);
       if (
         isCardPlay &&
-        CardInfo &&
         Array.isArray(CardInfo.axial) &&
         CardInfo.axial.length > 0
       ) {
