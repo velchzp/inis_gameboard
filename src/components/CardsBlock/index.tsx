@@ -9,6 +9,7 @@ import { GameStage } from "../../types/Enums";
 import { AppDispatch } from "../../redux/store";
 
 import { setCardPlay } from "../../redux/slices/CardPlaySlice";
+import { fetchCardInfo } from "../../redux/slices/CardParamsSlice";
 
 export const CardsBlock = () => {
   const [action_cards_ids, setAction_cards_ids] = useState<string[]>([]);
@@ -30,6 +31,7 @@ export const CardsBlock = () => {
     socket.emit("player-card-info", {
       cardId: cardID,
     });
+    dispatch(fetchCardInfo());
     console.log("clicked!");
   };
   const handleCardDealClick = (cardID: string) => {
