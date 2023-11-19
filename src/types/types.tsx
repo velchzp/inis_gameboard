@@ -1,4 +1,4 @@
-import { playerAction } from "./Enums";
+import { playerAction, GameStage } from "./Enums";
 import {
   Card_type,
   Timing_to_play,
@@ -155,4 +155,18 @@ export interface IPlayerCardInput {
 export interface IPlayCard {
   isCardPlay: boolean;
   card: Card | null;
+}
+export interface IGameUiInfo {
+  gameStatus: boolean;
+  maxPlayers: number;
+  citadelsLeft: number;
+  sanctuariesLeft: number;
+  gameStage: GameStage;
+}
+export interface IDealCardsInfo {
+  cardsToDiscardNum: number;
+  cardIds: string[];
+}
+export interface IPlayerCardDealInput {
+  cardIds: string[];
 }

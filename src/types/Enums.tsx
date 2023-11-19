@@ -36,3 +36,11 @@ export enum CardParams {
   targetCardId,
   cardVariation,
 }
+export enum GameStage {
+  CapitalSetup = "CAPITAL_SETUP",
+  ClansSetup = "CLANS_SETUP",
+  Gathering = "GATHERING",
+  Season = "SEASON",
+  Fight = "FIGHT",
+  END = "END",
+}
