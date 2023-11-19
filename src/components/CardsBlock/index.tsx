@@ -23,21 +23,16 @@ export const CardsBlock = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const handleCardClick = (cardID: string) => {
-    const clickedCard = cardActionMap.get(cardID);
-    setIsCardPlay(true);
-    setCardID(cardID);
+  const handleCardClick = (cardClickedID: string) => {
+    const clickedCard = cardActionMap.get(cardClickedID);
+    console.log(cardClickedID);
     dispatch(setCardPlay({ isCardPlay: true, card: clickedCard }));
-    socket.emit("player-card-info", {
-      cardId: cardID,
-    });
-    dispatch(fetchCardInfo());
     console.log("clicked!");
   };
   const handleCardDealClick = (cardID: string) => {
-    console.log(cardID);
+    // console.log(cardID);
     setCardsToDeal((prevSelectedCards) => [...prevSelectedCards, cardID]);
-    console.log(cardsToDeal);
+    // console.log(cardsToDeal);
   };
   const handleConfirmButton = (cardsToDeal: string[]) => {
     // console.log(cardsToDeal);
@@ -57,7 +52,7 @@ export const CardsBlock = () => {
   });
 
   useEffect(() => {
-    console.log(gameInfo);
+    // console.log(gameInfo);
     if (gameInfo?.gameStage == GameStage.Gathering) {
       socket.on("dealCards-update", (data: IDealCardsInfo) => {
         setAction_cards_ids(data.cardIds);
@@ -85,12 +80,12 @@ export const CardsBlock = () => {
               onClick={() => {
                 if (gameInfo?.gameStage == GameStage.Gathering) {
                   if (cardsToDeal.length == cardsToDiscardNum) {
-                    console.log("sosi");
+                    // console.log("sosi");
                   } else {
                     handleCardDealClick(cardId);
                   }
                 } else {
-                  handleCardClick(cardID);
+                  handleCardClick(cardId);
                 }
               }}
               key={cardId}
