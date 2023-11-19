@@ -27,14 +27,15 @@ export const CardsBlock = () => {
     setIsCardPlay(true);
     setCardID(cardID);
     dispatch(setCardPlay({ isCardPlay: true, card: clickedCard }));
-
     socket.emit("player-card-info", {
       cardId: cardID,
     });
+    console.log("clicked!");
   };
   const handleCardDealClick = (cardID: string) => {
     console.log(cardID);
     setCardsToDeal((prevSelectedCards) => [...prevSelectedCards, cardID]);
+    console.log("clicked2!");
   };
   const handleConfirmButton = (cardsToDeal: string[]) => {
     console.log(cardsToDeal);
