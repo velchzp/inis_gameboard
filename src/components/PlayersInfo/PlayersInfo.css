@@ -8,6 +8,16 @@
   flex-direction: column;
   justify-content: center;
 }
+.activePlayerClass {
+  width: 210px;
+  height: 80px;
+  background-color: rgb(170, 223, 242);
+  float: right;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .nicknamebox {
   display: flex;
   height: 25px !important;

@@ -7,18 +7,19 @@ import { Typography, Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { CardPlay } from "../../components/CardPlay";
+import { socket } from "../../sockets/socket";
 
 export const Board = () => {
+  useEffect(() => {});
   const { isCardPlay, card } = useSelector(
     (state: RootState) => state.cardPlay
   );
   window.scrollTo(2700, 3300);
-  useEffect(() => {
-    // window.scrollTo(2700, 3400);
-    // console.log(isCardPlay);
-    // console.log(card);
-  });
-
+  useEffect(() => {});
+  const handleNextTurnClick = () => {
+    socket.emit("next-turn");
+    socket.emit("sidebar-update");
+  };
   return (
     <div className="body">
       <HexGrid />
@@ -26,7 +27,9 @@ export const Board = () => {
         <SideBlock />
       </div>
       <div className="cards_block">
-        <Button variant="contained">Next turn</Button>
+        <Button variant="contained" onClick={handleNextTurnClick}>
+          Next turn
+        </Button>
         <CardsBlock />
       </div>
     </div>
