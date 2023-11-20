@@ -5,13 +5,23 @@ import { useEffect } from "react";
 import { Board } from "./pages/Board";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "./redux/store";
-import { fetchLobbyInfo } from "./redux/slices/LobbyInfoSlice";
+import { setDeck } from "./redux/slices/MyDeckSlice";
+import { setHexagons } from "./redux/slices/hexagonsSlice";
+import { setSidebar } from "./redux/slices/SideBarSlice";
+import { setCardParams } from "./redux/slices/CardParamsSlice";
+import { setGameInfo } from "./redux/slices/GameInfoSlice";
+import { GameStage } from "./types/Enums";
+import { setDealCard } from "./redux/slices/DealCardsSlice";
 
 function App() {
   const dispatch: AppDispatch = useDispatch();
-  const LobbyInfo = useSelector((state: RootState) => state.lobbyInfo);
+  const gameInfo = useSelector((state: RootState) => state.gameinfo);
 
   useEffect(() => {
+    socket.on("connect", () => {
+      // console.log(socket.id);
+    });
+
     socket.emit(
       "game-join",
       "54a94296-eb0b-45dc-a6f6-544559cf6b8b",
@@ -23,14 +33,30 @@ function App() {
     socket.emit("allPlayers-info");
     socket.emit("game-update");
 
-    // dispatch(fetchLobbyInfo());
-    // dispatch(fetchHexagons());
-    // dispatch(fetchSidebarInfo());
-  }, []);
+    // if (gameInfo?.gameStage == GameStage.Gathering) {
+    //   socket.emit("dealCards-update");
+    // }
 
-  socket.on("connect", () => {
-    // console.log(socket.id);
-  });
+    socket.on("map-update", (data) => {
+      dispatch(setHexagons(data));
+    });
+    socket.on("sidebar-update", (data) => {
+      dispatch(setSidebar(data));
+    });
+    socket.on("player-card-info", (cardInfo) => {
+      dispatch(setCardParams(cardInfo));
+    });
+    socket.on("game-update", (data) => {
+      dispatch(setGameInfo(data));
+    });
+    socket.on("my-deck-update", (deckinfo) => {
+      dispatch(setDeck(deckinfo));
+    });
+    // socket.on("dealCards-update", (data) => {
+    //   dispatch(setDealCard(data));
+    //   console.log(data);
+    // });
+  }, []);
 
   return (
     <div className="App">

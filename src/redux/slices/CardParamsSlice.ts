@@ -1,17 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { ICardParams, ICardOperationResponse } from "../../types/types";
-import { socket } from "../../sockets/socket";
-
-export const fetchCardInfo = createAsyncThunk(
-  "cards/fetchCardInfo",
-  async () => {
-    return new Promise<ICardOperationResponse>((resolve) => {
-      socket.on("player-card-info", (cardInfo: ICardOperationResponse) => {
-        resolve(cardInfo);
-      });
-    });
-  }
-);
+import { createSlice } from "@reduxjs/toolkit";
+import { ICardOperationResponse } from "../../types/types";
 
 const initialState: ICardOperationResponse = {
   axial: [],
@@ -23,30 +11,21 @@ const initialState: ICardOperationResponse = {
   axialToPlayerId: [],
 };
 
-const cardsSlice = createSlice({
+const cardsParamsSlice = createSlice({
   name: "cards",
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(fetchCardInfo.fulfilled, (state, action) => {
-      const {
-        axial,
-        cardIds,
-        maxCardClicks,
-        maxTerClicks,
-        maxTargetPlayerClicks,
-        axialToNum,
-        axialToPlayerId,
-      } = action.payload;
-      state.axial = axial;
-      state.axialToPlayerId = axialToPlayerId;
-      state.axialToNum = axialToNum;
-      state.maxCardClicks = maxCardClicks;
-      state.maxTerClicks = maxTerClicks;
-      state.maxTargetPlayerClicks = maxTargetPlayerClicks;
-      state.cardIds = cardIds;
-    });
+  reducers: {
+    setCardParams: (state, action) => {
+      state.axial = action.payload.axial;
+      state.axialToNum = action.payload.axialToNum;
+      state.axialToPlayerId = action.payload.axialToPlayerId;
+      state.cardIds = action.payload.cardIds;
+      state.maxCardClicks = action.payload.maxCardClicks;
+      state.maxTargetPlayerClicks = action.payload.maxTargetPlayerClicks;
+      state.maxTerClicks = action.payload.maxTerClicks;
+    },
   },
 });
 
-export default cardsSlice.reducer;
+export const { setCardParams } = cardsParamsSlice.actions;
+export default cardsParamsSlice.reducer;

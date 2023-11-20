@@ -6,18 +6,16 @@ import { cardActionMap } from "../../types/maps/actioncards_map";
 import { IMyDeckUiInfo, IGameUiInfo, IDealCardsInfo } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { GameStage } from "../../types/Enums";
-import { AppDispatch } from "../../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
 
 import { setCardPlay } from "../../redux/slices/CardPlaySlice";
-import { fetchCardInfo } from "../../redux/slices/CardParamsSlice";
 
 export const CardsBlock = () => {
   const [action_cards_ids, setAction_cards_ids] = useState<string[]>([]);
-  const [epos, setEpos_cards_ids] = useState<string[]>([]);
-  const [adv_cards_ids, setAdv_cards_ids] = useState<string[]>([]);
-  const [gameInfo, setGameInfo] = useState<IGameUiInfo>();
-  const [isCardPlay, setIsCardPlay] = useState(false);
-  const [cardID, setCardID] = useState<string>("");
+
+  const deckinfo = useSelector((state: RootState) => state.deckinfo);
+  const gameInfo = useSelector((state: RootState) => state.gameinfo);
+  const Dealcards = useSelector((state: RootState) => state.dealCard);
   const [cardsToDeal, setCardsToDeal] = useState<string[]>([]);
   const [cardsToDiscardNum, setcardsToDiscardNum] = useState<number>();
 
@@ -30,12 +28,9 @@ export const CardsBlock = () => {
     console.log("clicked!");
   };
   const handleCardDealClick = (cardID: string) => {
-    // console.log(cardID);
     setCardsToDeal((prevSelectedCards) => [...prevSelectedCards, cardID]);
-    // console.log(cardsToDeal);
   };
   const handleConfirmButton = (cardsToDeal: string[]) => {
-    // console.log(cardsToDeal);
     socket.emit("player-card-deal", {
       cardIds: cardsToDeal,
     });
@@ -43,30 +38,13 @@ export const CardsBlock = () => {
   };
 
   useEffect(() => {
-    socket.on("game-update", (data) => {
-      setGameInfo(data);
-    });
-    if (gameInfo?.gameStage == GameStage.Gathering) {
-      socket.emit("dealCards-update");
-    }
+    // console.log(Dealcards);
+    // if (gameInfo?.gameStage == GameStage.Gathering) {
+    //   setAction_cards_ids(Dealcards.cardIds);
+    // } else {
+    setAction_cards_ids(deckinfo.ActionCards);
+    // }
   });
-
-  useEffect(() => {
-    // console.log(gameInfo);
-    if (gameInfo?.gameStage == GameStage.Gathering) {
-      socket.on("dealCards-update", (data: IDealCardsInfo) => {
-        setAction_cards_ids(data.cardIds);
-        setcardsToDiscardNum(data.cardsToDiscardNum);
-      });
-    } else {
-      socket.on("my-deck-update", (deckinfo: IMyDeckUiInfo) => {
-        setAction_cards_ids(deckinfo.ActionCards);
-        setEpos_cards_ids(deckinfo.EposCards);
-        setAdv_cards_ids(deckinfo.AdvantagesCards);
-        // console.log(deckinfo);
-      });
-    }
-  }, [gameInfo]);
 
   return (
     <div className="cards_wrapper">
@@ -79,8 +57,8 @@ export const CardsBlock = () => {
               className="card"
               onClick={() => {
                 if (gameInfo?.gameStage == GameStage.Gathering) {
-                  if (cardsToDeal.length == cardsToDiscardNum) {
-                    // console.log("sosi");
+                  if (cardsToDeal.length == Dealcards.cardsToDiscardNum) {
+                    console.log("sosi");
                   } else {
                     handleCardDealClick(cardId);
                   }
@@ -107,7 +85,7 @@ export const CardsBlock = () => {
       <Box className="advantage_cards">
         {/* Advantage Cards content goes here */}
       </Box>
-      {cardsToDeal.length == cardsToDiscardNum ? (
+      {cardsToDeal.length == Dealcards.cardsToDiscardNum ? (
         <Button
           onClick={() => {
             handleConfirmButton(cardsToDeal);

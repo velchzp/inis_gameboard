@@ -7,22 +7,13 @@ import { socket } from "../../sockets/socket";
 import { axialCoordinates, ICardParams } from "../../types/types";
 import { AppDispatch } from "../../redux/store";
 import { setCardPlay } from "../../redux/slices/CardPlaySlice";
-
 import { CardParams } from "../../types/Enums";
-import {
-  IMapUiInfo,
-  ISidebarUiInfo,
-  ICardOperationResponse,
-} from "../../types/types";
 
 export const HexGrid = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  // const MapInfo = useSelector((state: RootState) => state.hexagons);
-  const [MapInfo, setMapInfo] = useState<IMapUiInfo>();
-  // const SideBarInfo = useSelector((state: RootState) => state.sideBar);
-  const [SideBarInfo, setSideBarInfo] = useState<ISidebarUiInfo>();
-  // const CardInfo = useSelector((state: RootState) => state.cards);
-  const [CardInfo, setCardInfo] = useState<ICardOperationResponse>();
+  const MapInfo = useSelector((state: RootState) => state.hexagons);
+  const SideBarInfo = useSelector((state: RootState) => state.sideBar);
+  const CardInfo = useSelector((state: RootState) => state.cards);
   const [CardInputParams, setCardInputParams] = useState<ICardParams | null>();
   const { isCardPlay, card } = useSelector(
     (state: RootState) => state.cardPlay
@@ -39,13 +30,9 @@ export const HexGrid = () => {
       socket.emit("player-card-info", {
         cardId: card.id,
       });
-      socket.on("player-card-info", (cardInfo: ICardOperationResponse) => {
-        setCardInfo(cardInfo);
-      });
     }
   }, [isCardPlay]);
   useEffect(() => {
-    // console.log(CardInputParams);
     if (card && CardInputParams) {
       socket.emit("player-card-season", {
         cardId: card.id,
@@ -54,12 +41,6 @@ export const HexGrid = () => {
       dispatch(setCardPlay({ isCardPlay: false, card: null }));
       setCardInputParams(null);
     }
-    socket.on("map-update", (data) => {
-      setMapInfo(data);
-    });
-    socket.on("sidebar-update", (data) => {
-      setSideBarInfo(data);
-    });
     // console.log(MapInfo);
   });
 
