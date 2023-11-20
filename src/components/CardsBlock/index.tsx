@@ -36,15 +36,19 @@ export const CardsBlock = () => {
     });
     setCardsToDeal([]);
   };
-
   useEffect(() => {
-    // console.log(Dealcards);
-    // if (gameInfo?.gameStage == GameStage.Gathering) {
-    //   setAction_cards_ids(Dealcards.cardIds);
-    // } else {
-    setAction_cards_ids(deckinfo.ActionCards);
-    // }
-  });
+    if (gameInfo?.gameStage == GameStage.Gathering) {
+      socket.emit("dealCards-update");
+    }
+  }, [gameInfo, Dealcards]);
+  useEffect(() => {
+    if (gameInfo?.gameStage == GameStage.Gathering) {
+      setAction_cards_ids(Dealcards.cardIds);
+      setcardsToDiscardNum(Dealcards.cardsToDiscardNum);
+    } else {
+      setAction_cards_ids(deckinfo.ActionCards);
+    }
+  }, [Dealcards, gameInfo, deckinfo]);
 
   return (
     <div className="cards_wrapper">
@@ -57,7 +61,7 @@ export const CardsBlock = () => {
               className="card"
               onClick={() => {
                 if (gameInfo?.gameStage == GameStage.Gathering) {
-                  if (cardsToDeal.length == Dealcards.cardsToDiscardNum) {
+                  if (cardsToDeal.length == cardsToDiscardNum) {
                     console.log("sosi");
                   } else {
                     handleCardDealClick(cardId);
@@ -85,7 +89,7 @@ export const CardsBlock = () => {
       <Box className="advantage_cards">
         {/* Advantage Cards content goes here */}
       </Box>
-      {cardsToDeal.length == Dealcards.cardsToDiscardNum ? (
+      {cardsToDeal.length == cardsToDiscardNum ? (
         <Button
           onClick={() => {
             handleConfirmButton(cardsToDeal);

@@ -25,17 +25,13 @@ function App() {
     socket.emit(
       "game-join",
       "54a94296-eb0b-45dc-a6f6-544559cf6b8b",
-      localStorage.getItem("token")
+      "6553995defc2b3f2962ef65d"
     );
     socket.emit("sidebar-update");
     socket.emit("my-deck-update");
     socket.emit("map-update");
     socket.emit("allPlayers-info");
     socket.emit("game-update");
-
-    // if (gameInfo?.gameStage == GameStage.Gathering) {
-    //   socket.emit("dealCards-update");
-    // }
 
     socket.on("map-update", (data) => {
       dispatch(setHexagons(data));
@@ -52,10 +48,9 @@ function App() {
     socket.on("my-deck-update", (deckinfo) => {
       dispatch(setDeck(deckinfo));
     });
-    // socket.on("dealCards-update", (data) => {
-    //   dispatch(setDealCard(data));
-    //   console.log(data);
-    // });
+    socket.on("dealCards-update", (data) => {
+      dispatch(setDealCard(data));
+    });
   }, []);
 
   return (
