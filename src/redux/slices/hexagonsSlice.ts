@@ -1,17 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { IMapUiInfo } from "../../types/types";
-import { socket } from "../../sockets/socket";
-
-export const fetchHexagons = createAsyncThunk(
-  "hexagons/fetchHexagons",
-  async () => {
-    return new Promise<IMapUiInfo>((resolve) => {
-      socket.on("map-update", (mapInfo: IMapUiInfo) => {
-        resolve(mapInfo);
-      });
-    });
-  }
-);
 
 const initialState: IMapUiInfo = {
   capital: null,
@@ -23,16 +11,14 @@ const initialState: IMapUiInfo = {
 const hexagonsSlice = createSlice({
   name: "hexagons",
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(fetchHexagons.fulfilled, (state, action) => {
-      const { capital, holiday, terLeft, hexGrid } = action.payload;
-      state.capital = capital;
-      state.holiday = holiday;
-      state.terLeft = terLeft;
-      state.hexGrid = hexGrid;
-    });
+  reducers: {
+    setHexagons: (state, action) => {
+      state.capital = action.payload.capital;
+      state.hexGrid = action.payload.hexGrid;
+      state.holiday = action.payload.holiday;
+      state.terLeft = action.payload.terLeft;
+    },
   },
 });
-
+export const { setHexagons } = hexagonsSlice.actions;
 export default hexagonsSlice.reducer;

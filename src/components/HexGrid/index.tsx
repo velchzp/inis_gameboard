@@ -7,8 +7,7 @@ import { socket } from "../../sockets/socket";
 import { axialCoordinates, ICardParams } from "../../types/types";
 import { AppDispatch } from "../../redux/store";
 import { setCardPlay } from "../../redux/slices/CardPlaySlice";
-import { fetchHexagons } from "../../redux/slices/hexagonsSlice";
-import { fetchSidebarInfo } from "../../redux/slices/SideBarSlice";
+
 import { CardParams } from "../../types/Enums";
 import {
   IMapUiInfo,
