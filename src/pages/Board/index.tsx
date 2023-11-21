@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { socket } from "../../sockets/socket";
 import { IPretenderTokenInput } from "../../types/types";
-import { PretenderTokenType } from "../../types/Enums";
+import { GameStage, PretenderTokenType } from "../../types/Enums";
 
 export const Board = () => {
   const gameInfo = useSelector((state: RootState) => state.gameinfo);
@@ -33,42 +33,66 @@ export const Board = () => {
       type: PretenderTokenType.Sanctuaries,
     });
   };
+  const handleBacktomenuClick = () => {
+    window.location.href = "http://localhost:4444";
+  };
   return (
     <div className="body">
       <HexGrid />
-      <div className="sideblock">
-        <div className="sideblock_text">
-          <Typography style={{ color: "white" }}>
-            Username: {meinfo.username}
-          </Typography>
-          <Typography style={{ color: "white" }}>
-            Game stage: {gameInfo.gameStage}
-          </Typography>
+      {gameInfo.gameStage === GameStage.END ? (
+        <div className="gameover-container">
+          <div className="gameover-text">
+            <Typography variant="h3" style={{ color: "white" }}>
+              Game Over
+            </Typography>
+          </div>
+          <div className="back-to-menu">
+            <Button
+              variant="contained"
+              className="Pass_button"
+              onClick={handleBacktomenuClick}
+            >
+              Back to menu
+            </Button>
+          </div>
         </div>
-        <div className="sideblock_2">
-          <SideBlock />
-          <Button
-            variant="contained"
-            className="Pass_button"
-            onClick={handlePassClick}
-          >
-            Pass
-          </Button>
-          <Button
-            variant="contained"
-            className="Pass_button"
-            onClick={handleGetTokenClick}
-          >
-            Get Sanctuary Token
-          </Button>
+      ) : (
+        <div>
+          <div className="sideblock">
+            <div className="sideblock_text">
+              <Typography style={{ color: "white" }}>
+                Username: {meinfo.username}
+              </Typography>
+              <Typography style={{ color: "white" }}>
+                Game stage: {gameInfo.gameStage}
+              </Typography>
+            </div>
+            <div className="sideblock_2">
+              <SideBlock />
+              <Button
+                variant="contained"
+                className="Pass_button"
+                onClick={handlePassClick}
+              >
+                Pass
+              </Button>
+              <Button
+                variant="contained"
+                className="Pass_button"
+                onClick={handleGetTokenClick}
+              >
+                Get Sanctuary Token
+              </Button>
+            </div>
+          </div>
+          <div className="cards_block">
+            <Button variant="contained" onClick={handleNextTurnClick}>
+              Next turn
+            </Button>
+            <CardsBlock />
+          </div>
         </div>
-      </div>
-      <div className="cards_block">
-        <Button variant="contained" onClick={handleNextTurnClick}>
-          Next turn
-        </Button>
-        <CardsBlock />
-      </div>
+      )}
     </div>
   );
 };

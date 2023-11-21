@@ -33,3 +33,22 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+/* Existing CSS styles */
+
+.gameover-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.gameover-text {
+  margin-bottom: 20px;
+}
+
+.back-to-menu {
+  display: flex;
+  justify-content: center;
+}
