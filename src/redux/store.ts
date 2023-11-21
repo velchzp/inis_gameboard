@@ -7,6 +7,7 @@ import cardsReducer from "./slices/CardParamsSlice";
 import GameInfoSlice from "./slices/GameInfoSlice";
 import MyDeckSlice from "./slices/MyDeckSlice";
 import DealCardsSlice from "./slices/DealCardsSlice";
+import MeInfoSlice from "./slices/MeInfoSlice";
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     gameinfo: GameInfoSlice,
     deckinfo: MyDeckSlice,
     dealCard: DealCardsSlice,
+    meinfo: MeInfoSlice,
   },
 });
 

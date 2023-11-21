@@ -1,4 +1,4 @@
-import { playerAction, GameStage } from "./Enums";
+import { playerAction, GameStage, PretenderTokenType } from "./Enums";
 import {
   Card_type,
   Timing_to_play,
@@ -169,4 +169,13 @@ export interface IDealCardsInfo {
 }
 export interface IPlayerCardDealInput {
   cardIds: string[];
+}
+export interface IMeUiInfo {
+  id: string;
+  username: string;
+  mmr: number;
+  color?: string;
+}
+export interface IPretenderTokenInput {
+  type: PretenderTokenType;
 }

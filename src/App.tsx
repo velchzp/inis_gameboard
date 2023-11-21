@@ -12,6 +12,7 @@ import { setCardParams } from "./redux/slices/CardParamsSlice";
 import { setGameInfo } from "./redux/slices/GameInfoSlice";
 import { GameStage } from "./types/Enums";
 import { setDealCard } from "./redux/slices/DealCardsSlice";
+import { setMeInfo } from "./redux/slices/MeInfoSlice";
 
 function App() {
   const dispatch: AppDispatch = useDispatch();
@@ -32,6 +33,7 @@ function App() {
     socket.emit("map-update");
     socket.emit("allPlayers-info");
     socket.emit("game-update");
+    socket.emit("me-info");
 
     socket.on("map-update", (data) => {
       dispatch(setHexagons(data));
@@ -50,6 +52,9 @@ function App() {
     });
     socket.on("dealCards-update", (data) => {
       dispatch(setDealCard(data));
+    });
+    socket.on("me-info", (data) => {
+      dispatch(setMeInfo(data));
     });
   }, []);
 

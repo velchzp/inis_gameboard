@@ -44,3 +44,9 @@ export enum GameStage {
   Fight = "FIGHT",
   END = "END",
 }
+
+export enum PretenderTokenType {
+  Clans = "CLANS",
+  Sanctuaries = "SAN",
+  Territories = "TER",
+}
