@@ -18,12 +18,24 @@ export const Board = () => {
   useEffect(() => {});
   const handleNextTurnClick = () => {
     socket.emit("next-turn");
+    socket.emit("sidebar-update");
+  };
+  const handlePassClick = () => {
+    socket.emit("player-pass");
+    socket.emit("sidebar-update");
   };
   return (
     <div className="body">
       <HexGrid />
       <div className="sideblock">
         <SideBlock />
+        <Button
+          variant="contained"
+          className="Pass_button"
+          onClick={handlePassClick}
+        >
+          Pass
+        </Button>
       </div>
       <div className="cards_block">
         <Button variant="contained" onClick={handleNextTurnClick}>
