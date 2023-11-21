@@ -18,7 +18,6 @@ export const Board = () => {
   useEffect(() => {});
   const handleNextTurnClick = () => {
     socket.emit("next-turn");
-    socket.emit("sidebar-update");
   };
   return (
     <div className="body">
