@@ -4,17 +4,61 @@ import { SideBlock } from "../../components/SideBlock";
 import { HexGrid } from "../../components/HexGrid";
 import { CardsBlock } from "../../components/CardsBlock";
 import { Typography, Button } from "@mui/material";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
 import { socket } from "../../sockets/socket";
 import { IPretenderTokenInput } from "../../types/types";
 import { GameStage, PretenderTokenType } from "../../types/Enums";
+import { useParams } from "react-router-dom";
+import { setHexagons } from "../../redux/slices/hexagonsSlice";
+import { setSidebar } from "../../redux/slices/SideBarSlice";
+import { setCardParams } from "../../redux/slices/CardParamsSlice";
+import { setGameInfo } from "../../redux/slices/GameInfoSlice";
+import { setDeck } from "../../redux/slices/MyDeckSlice";
+import { setDealCard } from "../../redux/slices/DealCardsSlice";
+import { setMeInfo } from "../../redux/slices/MeInfoSlice";
 
 export const Board = () => {
+  const dispatch: AppDispatch = useDispatch();
   const gameInfo = useSelector((state: RootState) => state.gameinfo);
   const meinfo = useSelector((state: RootState) => state.meinfo);
+  const { id } = useParams();
+  useEffect(() => {
+    socket.on("connect", () => {
+      // console.log(socket.id);
+    });
+    console.log(id);
+    socket.emit("game-join", id, localStorage.getItem("token"));
 
-  useEffect(() => {});
+    socket.emit("sidebar-update");
+    socket.emit("my-deck-update");
+    socket.emit("map-update");
+    socket.emit("allPlayers-info");
+    socket.emit("game-update");
+    socket.emit("me-info");
+
+    socket.on("map-update", (data) => {
+      dispatch(setHexagons(data));
+    });
+    socket.on("sidebar-update", (data) => {
+      dispatch(setSidebar(data));
+    });
+    socket.on("player-card-info", (cardInfo) => {
+      dispatch(setCardParams(cardInfo));
+    });
+    socket.on("game-update", (data) => {
+      dispatch(setGameInfo(data));
+    });
+    socket.on("my-deck-update", (deckinfo) => {
+      dispatch(setDeck(deckinfo));
+    });
+    socket.on("dealCards-update", (data) => {
+      dispatch(setDealCard(data));
+    });
+    socket.on("me-info", (data) => {
+      dispatch(setMeInfo(data));
+    });
+  }, []);
   const { isCardPlay, card } = useSelector(
     (state: RootState) => state.cardPlay
   );
