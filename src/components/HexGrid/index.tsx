@@ -32,6 +32,7 @@ export const HexGrid = () => {
       });
     }
   }, [isCardPlay]);
+
   useEffect(() => {
     if (card && CardInputParams) {
       socket.emit("player-card-season", {
@@ -183,10 +184,8 @@ export const HexGrid = () => {
           }
         };
 
-        // Add the event listener outside the loop
         canvas.addEventListener("click", handleCanvasClick);
 
-        // Cleanup function
         return () => {
           canvas.removeEventListener("click", handleCanvasClick);
         };

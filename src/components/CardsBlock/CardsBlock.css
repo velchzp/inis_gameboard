@@ -6,7 +6,6 @@
 }
 .epos_cards {
   display: flex;
-
   width: 30%;
   justify-content: center;
   /* border: 2px solid black; */
@@ -19,7 +18,6 @@
 }
 .advantage_cards {
   display: flex;
-
   width: 30%;
   justify-content: center;
   /* border: 2px solid black; */
