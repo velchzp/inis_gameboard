@@ -7,7 +7,7 @@ import { socket } from "../../sockets/socket";
 import { axialCoordinates, ICardParams } from "../../types/types";
 import { AppDispatch } from "../../redux/store";
 import { setCardPlay } from "../../redux/slices/CardPlaySlice";
-import { CardParams } from "../../types/Enums";
+import { CardParams, GameStage } from "../../types/Enums";
 
 export const HexGrid = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -15,14 +15,13 @@ export const HexGrid = () => {
   const SideBarInfo = useSelector((state: RootState) => state.sideBar);
   const CardInfo = useSelector((state: RootState) => state.cards);
   const [CardInputParams, setCardInputParams] = useState<ICardParams | null>();
+  const gameInfo = useSelector((state: RootState) => state.gameinfo);
+  const meinfo = useSelector((state: RootState) => state.meinfo);
   const { isCardPlay, card } = useSelector(
     (state: RootState) => state.cardPlay
   );
   const dispatch: AppDispatch = useDispatch();
-  const [axial, setAxial] = useState<axialCoordinates | axialCoordinates[]>({
-    q: 0,
-    r: 0,
-  });
+  const [axial, setAxial] = useState<axialCoordinates | null>();
   useEffect(() => {
     console.log(isCardPlay);
     console.log(card);
@@ -41,6 +40,22 @@ export const HexGrid = () => {
       });
       dispatch(setCardPlay({ isCardPlay: false, card: null }));
       setCardInputParams(null);
+    } else {
+      if (axial) {
+        if (gameInfo.gameStage == GameStage.CapitalSetup) {
+          socket.emit("game-setup-capital", {
+            q: axial.q,
+            r: axial.r,
+          });
+          setAxial(null);
+        } else {
+          socket.emit("game-setup-clans", {
+            q: axial.q,
+            r: axial.r,
+          });
+          setAxial(null);
+        }
+      }
     }
     // console.log(MapInfo);
   });
@@ -50,6 +65,7 @@ export const HexGrid = () => {
     if (!canvasRef.current) {
       return;
     }
+    console.log(meinfo);
     const canvas = canvasRef.current;
     canvas.width = 7000;
     canvas.height = 7000;
@@ -189,6 +205,53 @@ export const HexGrid = () => {
         return () => {
           canvas.removeEventListener("click", handleCanvasClick);
         };
+      }
+      if (
+        gameInfo.gameStage == GameStage.CapitalSetup ||
+        gameInfo.gameStage == GameStage.ClansSetup
+      ) {
+        if (meinfo.isActive) {
+          for (let i = 0; i < MapInfo.hexGrid.length; i++) {
+            let x = canvas.width / 2 + rad * (3 / 2) * MapInfo.hexGrid[i].r;
+            let y =
+              canvas.height / 2 +
+              rad *
+                Math.sqrt(3) *
+                (MapInfo.hexGrid[i].q + MapInfo.hexGrid[i].r / 2);
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = "transparent";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(x, y, 20, 0, 2 * Math.PI);
+            ctx.closePath();
+            ctx.stroke();
+          }
+
+          const handleSetupCapitalClick = (event: MouseEvent) => {
+            var mouseX = event.clientX - canvas.getBoundingClientRect().left;
+            var mouseY = event.clientY - canvas.getBoundingClientRect().top;
+
+            for (let i = 0; i < MapInfo.hexGrid.length; i++) {
+              let x = canvas.width / 2 + rad * (3 / 2) * MapInfo.hexGrid[i].r;
+              let y =
+                canvas.height / 2 +
+                rad *
+                  Math.sqrt(3) *
+                  (MapInfo.hexGrid[i].q + MapInfo.hexGrid[i].r / 2);
+
+              var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+              if (distance <= 20) {
+                setAxial(MapInfo.hexGrid[i]);
+                console.log("clicked!");
+              }
+            }
+          };
+          canvas.addEventListener("click", handleSetupCapitalClick);
+
+          return () => {
+            canvas.removeEventListener("click", handleSetupCapitalClick);
+          };
+        }
       }
     }
   }, [MapInfo, isCardPlay, CardInfo]);

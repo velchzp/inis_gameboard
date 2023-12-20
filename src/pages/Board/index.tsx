@@ -16,7 +16,7 @@ import { setCardParams } from "../../redux/slices/CardParamsSlice";
 import { setGameInfo } from "../../redux/slices/GameInfoSlice";
 import { setDeck } from "../../redux/slices/MyDeckSlice";
 import { setDealCard } from "../../redux/slices/DealCardsSlice";
-import { setMeInfo } from "../../redux/slices/MeInfoSlice";
+import { setMeInfo, setIsActive } from "../../redux/slices/MeInfoSlice";
 
 export const Board = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -36,6 +36,7 @@ export const Board = () => {
     socket.emit("allPlayers-info");
     socket.emit("game-update");
     socket.emit("me-info");
+    socket.emit("is-active");
 
     socket.on("map-update", (data) => {
       dispatch(setHexagons(data));
@@ -57,6 +58,10 @@ export const Board = () => {
     });
     socket.on("me-info", (data) => {
       dispatch(setMeInfo(data));
+    });
+    socket.on("is-active", (data) => {
+      dispatch(setIsActive(data.isActive));
+      console.log("sosi", data);
     });
   }, []);
   const { isCardPlay, card } = useSelector(

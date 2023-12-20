@@ -115,6 +115,7 @@ export interface IMeUiInfo {
   username: string;
   mmr: number;
   color?: string;
+  isActive?: boolean;
 }
 
 export interface IPlayersUiInfo {

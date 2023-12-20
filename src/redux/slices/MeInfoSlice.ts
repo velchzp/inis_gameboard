@@ -5,6 +5,7 @@ const initialState: IMeUiInfo = {
   id: "",
   username: "",
   mmr: 0,
+  isActive: false,
 };
 
 const MeInfoSlice = createSlice({
@@ -16,8 +17,11 @@ const MeInfoSlice = createSlice({
       state.username = action.payload.username;
       state.mmr = action.payload.mmr;
     },
+    setIsActive: (state: IMeUiInfo, action: PayloadAction<boolean>) => {
+      state.isActive = action.payload;
+    },
   },
 });
 
-export const { setMeInfo } = MeInfoSlice.actions;
+export const { setMeInfo, setIsActive } = MeInfoSlice.actions;
 export default MeInfoSlice.reducer;
