@@ -9,6 +9,7 @@ const initialState: ICardOperationResponse = {
   maxTargetPlayerClicks: 0,
   axialToNum: [],
   axialToPlayerId: [],
+  moveData: [],
 };
 
 const cardsParamsSlice = createSlice({
@@ -23,6 +24,7 @@ const cardsParamsSlice = createSlice({
       state.maxCardClicks = action.payload.maxCardClicks;
       state.maxTargetPlayerClicks = action.payload.maxTargetPlayerClicks;
       state.maxTerClicks = action.payload.maxTerClicks;
+      state.moveData = action.payload.moveData;
     },
   },
 });

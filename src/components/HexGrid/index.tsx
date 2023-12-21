@@ -42,18 +42,20 @@ export const HexGrid = () => {
       setCardInputParams(null);
     } else {
       if (axial) {
-        if (gameInfo.gameStage == GameStage.CapitalSetup) {
+        if (gameInfo.gameStage === GameStage.CapitalSetup) {
           socket.emit("game-setup-capital", {
             q: axial.q,
             r: axial.r,
           });
           setAxial(null);
         } else {
-          socket.emit("game-setup-clans", {
-            q: axial.q,
-            r: axial.r,
-          });
-          setAxial(null);
+          if (gameInfo.gameStage === GameStage.ClansSetup) {
+            socket.emit("game-setup-clans", {
+              q: axial.q,
+              r: axial.r,
+            });
+            setAxial(null);
+          }
         }
       }
     }
@@ -142,46 +144,11 @@ export const HexGrid = () => {
         }
       });
       // console.log(isCardPlay);
-    }
-  }, [MapInfo, gameInfo, meinfo]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) {
-      return;
-    }
-    const rad = 200;
-    const ctx = canvas!.getContext("2d");
-    if (!ctx) {
-      return;
-    }
-
-    if (isCardPlay && CardInfo) {
-      if (Array.isArray(CardInfo.axial) && CardInfo.axial.length > 0) {
+      if (isCardPlay && CardInfo) {
         console.log(CardInfo);
         const a = (2 * Math.PI) / 6;
-        for (let i = 0; i < CardInfo.axial.length; i++) {
-          let x = canvas.width / 2 + rad * (3 / 2) * CardInfo.axial[i].r;
-          let y =
-            canvas.height / 2 +
-            rad *
-              Math.sqrt(3) *
-              (CardInfo.axial[i].q + CardInfo.axial[i].r / 2);
-          ctx.strokeStyle = "black";
-          ctx.fillStyle = "transparent";
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.arc(x, y, 20, 0, 2 * Math.PI);
-          ctx.closePath();
-          ctx.stroke();
-        }
-      }
-
-      const handleCanvasClick = (event: MouseEvent) => {
-        var mouseX = event.clientX - canvas.getBoundingClientRect().left;
-        var mouseY = event.clientY - canvas.getBoundingClientRect().top;
-
         if (Array.isArray(CardInfo.axial) && CardInfo.axial.length > 0) {
+          console.log(CardInfo);
           for (let i = 0; i < CardInfo.axial.length; i++) {
             let x = canvas.width / 2 + rad * (3 / 2) * CardInfo.axial[i].r;
             let y =
@@ -189,67 +156,132 @@ export const HexGrid = () => {
               rad *
                 Math.sqrt(3) *
                 (CardInfo.axial[i].q + CardInfo.axial[i].r / 2);
-
-            var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
-            if (distance <= 20) {
-              if (card?.params?.includes(CardParams.singleAxial)) {
-                setCardInputParams({
-                  singleAxial: CardInfo.axial[i],
-                });
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = "transparent";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(x, y, 20, 0, 2 * Math.PI);
+            ctx.closePath();
+            ctx.stroke();
+          }
+        } else {
+          if (CardInfo.moveData) {
+            console.log(CardInfo);
+            if (axial) {
+              console.log(axial);
+              for (let i = 0; i < CardInfo.moveData.length; i++) {
+                if (
+                  CardInfo.moveData[i].singleAxial.q == axial.q &&
+                  CardInfo.moveData[i].singleAxial.r == axial.r
+                ) {
+                  for (const axialToNum of CardInfo.moveData[i].axialToNum) {
+                    console.log("sosiiiii");
+                    let x =
+                      canvas.width / 2 + rad * (3 / 2) * axialToNum.axial.r;
+                    let y =
+                      canvas.height / 2 +
+                      rad *
+                        Math.sqrt(3) *
+                        (axialToNum.axial.q + axialToNum.axial.r / 2);
+                    ctx.strokeStyle = "black";
+                    ctx.fillStyle = "transparent";
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 20, 0, 2 * Math.PI);
+                    ctx.closePath();
+                    ctx.stroke();
+                  }
+                }
               }
-              if (card?.params?.includes(CardParams.axial)) {
-                setCardInputParams({
-                  axial: [CardInfo.axial[i]],
-                });
+            } else {
+              for (let i = 0; i < CardInfo.moveData.length; i++) {
+                let x =
+                  canvas.width / 2 +
+                  rad * (3 / 2) * CardInfo.moveData[i].singleAxial.r;
+                let y =
+                  canvas.height / 2 +
+                  rad *
+                    Math.sqrt(3) *
+                    (CardInfo.moveData[i].singleAxial.q +
+                      CardInfo.moveData[i].singleAxial.r / 2);
+                ctx.strokeStyle = "black";
+                ctx.fillStyle = "transparent";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(x, y, 20, 0, 2 * Math.PI);
+                ctx.closePath();
+                ctx.stroke();
               }
             }
           }
         }
-      };
 
-      canvas.addEventListener("click", handleCanvasClick);
-
-      return () => {
-        canvas.removeEventListener("click", handleCanvasClick);
-      };
-    }
-  }, [isCardPlay, CardInfo]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) {
-      return;
-    }
-    const rad = 200;
-    const ctx = canvas!.getContext("2d");
-    if (!ctx) {
-      return;
-    }
-    if (
-      gameInfo.gameStage == GameStage.CapitalSetup ||
-      gameInfo.gameStage == GameStage.ClansSetup
-    ) {
-      if (meinfo.isActive) {
-        for (let i = 0; i < MapInfo.hexGrid.length; i++) {
-          let x = canvas.width / 2 + rad * (3 / 2) * MapInfo.hexGrid[i].r;
-          let y =
-            canvas.height / 2 +
-            rad *
-              Math.sqrt(3) *
-              (MapInfo.hexGrid[i].q + MapInfo.hexGrid[i].r / 2);
-          ctx.strokeStyle = "black";
-          ctx.fillStyle = "transparent";
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.arc(x, y, 20, 0, 2 * Math.PI);
-          ctx.closePath();
-          ctx.stroke();
-        }
-
-        const handleSetupCapitalClick = (event: MouseEvent) => {
+        const handleCanvasClick = (event: MouseEvent) => {
           var mouseX = event.clientX - canvas.getBoundingClientRect().left;
           var mouseY = event.clientY - canvas.getBoundingClientRect().top;
 
+          if (Array.isArray(CardInfo.axial) && CardInfo.axial.length > 0) {
+            for (let i = 0; i < CardInfo.axial.length; i++) {
+              let x = canvas.width / 2 + rad * (3 / 2) * CardInfo.axial[i].r;
+              let y =
+                canvas.height / 2 +
+                rad *
+                  Math.sqrt(3) *
+                  (CardInfo.axial[i].q + CardInfo.axial[i].r / 2);
+
+              var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+              if (distance <= 20) {
+                if (card?.params?.includes(CardParams.singleAxial)) {
+                  setCardInputParams({
+                    singleAxial: CardInfo.axial[i],
+                  });
+                }
+                if (card?.params?.includes(CardParams.axial)) {
+                  setCardInputParams({
+                    axial: [CardInfo.axial[i]],
+                  });
+                }
+              }
+            }
+          } else {
+            if (CardInfo.moveData) {
+              for (let i = 0; i < CardInfo.moveData.length; i++) {
+                let x =
+                  canvas.width / 2 +
+                  rad * (3 / 2) * CardInfo.moveData[i].singleAxial.r;
+                let y =
+                  canvas.height / 2 +
+                  rad *
+                    Math.sqrt(3) *
+                    (CardInfo.moveData[i].singleAxial.q +
+                      CardInfo.moveData[i].singleAxial.r / 2);
+
+                var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+                if (distance <= 20) {
+                  console.log("clicked");
+                  if (card?.params?.includes(CardParams.singleAxial)) {
+                    setAxial({
+                      q: CardInfo.moveData[i].singleAxial.q,
+                      r: CardInfo.moveData[i].singleAxial.r,
+                    });
+                  }
+                }
+              }
+            }
+          }
+        };
+
+        canvas.addEventListener("click", handleCanvasClick);
+
+        return () => {
+          canvas.removeEventListener("click", handleCanvasClick);
+        };
+      }
+      if (
+        gameInfo.gameStage == GameStage.CapitalSetup ||
+        gameInfo.gameStage == GameStage.ClansSetup
+      ) {
+        if (meinfo.isActive) {
           for (let i = 0; i < MapInfo.hexGrid.length; i++) {
             let x = canvas.width / 2 + rad * (3 / 2) * MapInfo.hexGrid[i].r;
             let y =
@@ -257,22 +289,42 @@ export const HexGrid = () => {
               rad *
                 Math.sqrt(3) *
                 (MapInfo.hexGrid[i].q + MapInfo.hexGrid[i].r / 2);
-
-            var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
-            if (distance <= 20) {
-              setAxial(MapInfo.hexGrid[i]);
-              console.log("clicked!");
-            }
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = "transparent";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(x, y, 20, 0, 2 * Math.PI);
+            ctx.closePath();
+            ctx.stroke();
           }
-        };
-        canvas.addEventListener("click", handleSetupCapitalClick);
 
-        return () => {
-          canvas.removeEventListener("click", handleSetupCapitalClick);
-        };
+          const handleSetupCapitalClick = (event: MouseEvent) => {
+            var mouseX = event.clientX - canvas.getBoundingClientRect().left;
+            var mouseY = event.clientY - canvas.getBoundingClientRect().top;
+
+            for (let i = 0; i < MapInfo.hexGrid.length; i++) {
+              let x = canvas.width / 2 + rad * (3 / 2) * MapInfo.hexGrid[i].r;
+              let y =
+                canvas.height / 2 +
+                rad *
+                  Math.sqrt(3) *
+                  (MapInfo.hexGrid[i].q + MapInfo.hexGrid[i].r / 2);
+
+              var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+              if (distance <= 20) {
+                setAxial(MapInfo.hexGrid[i]);
+              }
+            }
+          };
+          canvas.addEventListener("click", handleSetupCapitalClick);
+
+          return () => {
+            canvas.removeEventListener("click", handleSetupCapitalClick);
+          };
+        }
       }
     }
-  }, [MapInfo, gameInfo, meinfo]);
+  }, [MapInfo, gameInfo, meinfo, isCardPlay, CardInfo, axial]);
 
   function Add_img(
     ctx: CanvasRenderingContext2D,

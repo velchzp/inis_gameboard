@@ -147,6 +147,10 @@ export interface ICardOperationResponse {
     axialCoordinates: axialCoordinates;
     playerIds: string[];
   }[];
+  moveData?: {
+    singleAxial: axialCoordinates;
+    axialToNum: { axial: axialCoordinates; num: number }[];
+  }[];
 }
 export interface IPlayerCardInput {
   cardId: string;
