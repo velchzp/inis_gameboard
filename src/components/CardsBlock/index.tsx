@@ -23,9 +23,7 @@ export const CardsBlock = () => {
 
   const handleCardClick = (cardClickedID: string) => {
     const clickedCard = cardActionMap.get(cardClickedID);
-    console.log(cardClickedID);
     dispatch(setCardPlay({ isCardPlay: true, card: clickedCard }));
-    console.log("clicked!");
   };
   const handleCardDealClick = (cardID: string) => {
     setCardsToDeal((prevSelectedCards) => [...prevSelectedCards, cardID]);

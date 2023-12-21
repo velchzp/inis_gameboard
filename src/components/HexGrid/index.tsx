@@ -65,7 +65,6 @@ export const HexGrid = () => {
     if (!canvasRef.current) {
       return;
     }
-    console.log(meinfo);
     const canvas = canvasRef.current;
     canvas.width = 7000;
     canvas.height = 7000;
@@ -143,12 +142,23 @@ export const HexGrid = () => {
         }
       });
       // console.log(isCardPlay);
-      if (
-        isCardPlay &&
-        CardInfo &&
-        Array.isArray(CardInfo.axial) &&
-        CardInfo.axial.length > 0
-      ) {
+    }
+  }, [MapInfo, gameInfo, meinfo]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    const rad = 200;
+    const ctx = canvas!.getContext("2d");
+    if (!ctx) {
+      return;
+    }
+
+    if (isCardPlay && CardInfo) {
+      if (Array.isArray(CardInfo.axial) && CardInfo.axial.length > 0) {
+        console.log(CardInfo);
         const a = (2 * Math.PI) / 6;
         for (let i = 0; i < CardInfo.axial.length; i++) {
           let x = canvas.width / 2 + rad * (3 / 2) * CardInfo.axial[i].r;
@@ -165,52 +175,81 @@ export const HexGrid = () => {
           ctx.closePath();
           ctx.stroke();
         }
+      }
 
-        const handleCanvasClick = (event: MouseEvent) => {
-          var mouseX = event.clientX - canvas.getBoundingClientRect().left;
-          var mouseY = event.clientY - canvas.getBoundingClientRect().top;
+      const handleCanvasClick = (event: MouseEvent) => {
+        var mouseX = event.clientX - canvas.getBoundingClientRect().left;
+        var mouseY = event.clientY - canvas.getBoundingClientRect().top;
 
-          if (
-            isCardPlay &&
-            Array.isArray(CardInfo.axial) &&
-            CardInfo.axial.length > 0
-          ) {
-            for (let i = 0; i < CardInfo.axial.length; i++) {
-              let x = canvas.width / 2 + rad * (3 / 2) * CardInfo.axial[i].r;
-              let y =
-                canvas.height / 2 +
-                rad *
-                  Math.sqrt(3) *
-                  (CardInfo.axial[i].q + CardInfo.axial[i].r / 2);
+        if (Array.isArray(CardInfo.axial) && CardInfo.axial.length > 0) {
+          for (let i = 0; i < CardInfo.axial.length; i++) {
+            let x = canvas.width / 2 + rad * (3 / 2) * CardInfo.axial[i].r;
+            let y =
+              canvas.height / 2 +
+              rad *
+                Math.sqrt(3) *
+                (CardInfo.axial[i].q + CardInfo.axial[i].r / 2);
 
-              var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
-              if (distance <= 20) {
-                if (card?.params?.includes(CardParams.singleAxial)) {
-                  setCardInputParams({
-                    singleAxial: CardInfo.axial[i],
-                  });
-                }
-                if (card?.params?.includes(CardParams.axial)) {
-                  setCardInputParams({
-                    axial: [CardInfo.axial[i]],
-                  });
-                }
+            var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+            if (distance <= 20) {
+              if (card?.params?.includes(CardParams.singleAxial)) {
+                setCardInputParams({
+                  singleAxial: CardInfo.axial[i],
+                });
+              }
+              if (card?.params?.includes(CardParams.axial)) {
+                setCardInputParams({
+                  axial: [CardInfo.axial[i]],
+                });
               }
             }
           }
-        };
+        }
+      };
 
-        canvas.addEventListener("click", handleCanvasClick);
+      canvas.addEventListener("click", handleCanvasClick);
 
-        return () => {
-          canvas.removeEventListener("click", handleCanvasClick);
-        };
-      }
-      if (
-        gameInfo.gameStage == GameStage.CapitalSetup ||
-        gameInfo.gameStage == GameStage.ClansSetup
-      ) {
-        if (meinfo.isActive) {
+      return () => {
+        canvas.removeEventListener("click", handleCanvasClick);
+      };
+    }
+  }, [isCardPlay, CardInfo]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    const rad = 200;
+    const ctx = canvas!.getContext("2d");
+    if (!ctx) {
+      return;
+    }
+    if (
+      gameInfo.gameStage == GameStage.CapitalSetup ||
+      gameInfo.gameStage == GameStage.ClansSetup
+    ) {
+      if (meinfo.isActive) {
+        for (let i = 0; i < MapInfo.hexGrid.length; i++) {
+          let x = canvas.width / 2 + rad * (3 / 2) * MapInfo.hexGrid[i].r;
+          let y =
+            canvas.height / 2 +
+            rad *
+              Math.sqrt(3) *
+              (MapInfo.hexGrid[i].q + MapInfo.hexGrid[i].r / 2);
+          ctx.strokeStyle = "black";
+          ctx.fillStyle = "transparent";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(x, y, 20, 0, 2 * Math.PI);
+          ctx.closePath();
+          ctx.stroke();
+        }
+
+        const handleSetupCapitalClick = (event: MouseEvent) => {
+          var mouseX = event.clientX - canvas.getBoundingClientRect().left;
+          var mouseY = event.clientY - canvas.getBoundingClientRect().top;
+
           for (let i = 0; i < MapInfo.hexGrid.length; i++) {
             let x = canvas.width / 2 + rad * (3 / 2) * MapInfo.hexGrid[i].r;
             let y =
@@ -218,43 +257,22 @@ export const HexGrid = () => {
               rad *
                 Math.sqrt(3) *
                 (MapInfo.hexGrid[i].q + MapInfo.hexGrid[i].r / 2);
-            ctx.strokeStyle = "black";
-            ctx.fillStyle = "transparent";
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(x, y, 20, 0, 2 * Math.PI);
-            ctx.closePath();
-            ctx.stroke();
-          }
 
-          const handleSetupCapitalClick = (event: MouseEvent) => {
-            var mouseX = event.clientX - canvas.getBoundingClientRect().left;
-            var mouseY = event.clientY - canvas.getBoundingClientRect().top;
-
-            for (let i = 0; i < MapInfo.hexGrid.length; i++) {
-              let x = canvas.width / 2 + rad * (3 / 2) * MapInfo.hexGrid[i].r;
-              let y =
-                canvas.height / 2 +
-                rad *
-                  Math.sqrt(3) *
-                  (MapInfo.hexGrid[i].q + MapInfo.hexGrid[i].r / 2);
-
-              var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
-              if (distance <= 20) {
-                setAxial(MapInfo.hexGrid[i]);
-                console.log("clicked!");
-              }
+            var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+            if (distance <= 20) {
+              setAxial(MapInfo.hexGrid[i]);
+              console.log("clicked!");
             }
-          };
-          canvas.addEventListener("click", handleSetupCapitalClick);
+          }
+        };
+        canvas.addEventListener("click", handleSetupCapitalClick);
 
-          return () => {
-            canvas.removeEventListener("click", handleSetupCapitalClick);
-          };
-        }
+        return () => {
+          canvas.removeEventListener("click", handleSetupCapitalClick);
+        };
       }
     }
-  }, [MapInfo, isCardPlay, CardInfo]);
+  }, [MapInfo, gameInfo, meinfo]);
 
   function Add_img(
     ctx: CanvasRenderingContext2D,

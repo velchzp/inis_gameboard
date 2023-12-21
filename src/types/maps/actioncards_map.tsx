@@ -35,7 +35,8 @@ export const Conquest: Card = {
   description:
     "Choose 1 territory. You can move any number of clans from neighbours territories to it.",
   img_url: "/Conquest.png",
-} as const;
+  params: [CardParams.singleAxial, CardParams.axialToNum],
+};
 
 export const Bard: Card = {
   id: "9422292c-bd05-40b5-95bc-140dbd6bb3c2",
@@ -65,7 +66,7 @@ export const PeasantsWorkers: Card = {
   badge: Badge.Clans,
   description: "",
   img_url: "/Peasants.png",
-} as const;
+};
 
 export const NewUnion: Card = {
   id: "df9b3113-f639-4d74-9e6c-a88c98cdcafa",
