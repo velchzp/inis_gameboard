@@ -61,7 +61,6 @@ export const Board = () => {
     });
     socket.on("is-active", (data) => {
       dispatch(setIsActive(data.isActive));
-      console.log("sosi", data);
     });
   }, []);
   const { isCardPlay, card } = useSelector(

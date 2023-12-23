@@ -4,10 +4,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../redux/store";
 import { playersMap } from "../../types/maps/players_map";
 import { socket } from "../../sockets/socket";
-import { axialCoordinates, ICardParams } from "../../types/types";
+import { axialCoordinates, ICardParams, AxialToNum } from "../../types/types";
 import { AppDispatch } from "../../redux/store";
 import { setCardPlay } from "../../redux/slices/CardPlaySlice";
 import { CardParams, GameStage } from "../../types/Enums";
+
+var ClansNum = 0;
+const myMap: Map<axialCoordinates, number> = new Map();
+const AxialToNumCard: AxialToNum[] = [];
 
 export const HexGrid = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -17,14 +21,16 @@ export const HexGrid = () => {
   const [CardInputParams, setCardInputParams] = useState<ICardParams | null>();
   const gameInfo = useSelector((state: RootState) => state.gameinfo);
   const meinfo = useSelector((state: RootState) => state.meinfo);
+  // const [AxialToNumCard, setAxialToNumCard] = useState<AxialToNum[]>([]);
   const { isCardPlay, card } = useSelector(
     (state: RootState) => state.cardPlay
   );
+  // const [ClansNum, setClansNum] = useState<number>(0);
   const dispatch: AppDispatch = useDispatch();
   const [axial, setAxial] = useState<axialCoordinates | null>();
   useEffect(() => {
-    console.log(isCardPlay);
-    console.log(card);
+    // console.log(isCardPlay);
+    // console.log(card);
     if (card && isCardPlay) {
       socket.emit("player-card-info", {
         cardId: card.id,
@@ -34,12 +40,14 @@ export const HexGrid = () => {
 
   useEffect(() => {
     if (card && CardInputParams) {
+      console.log("Params to emit", CardInputParams);
       socket.emit("player-card-season", {
         cardId: card.id,
         params: CardInputParams,
       });
       dispatch(setCardPlay({ isCardPlay: false, card: null }));
       setCardInputParams(null);
+      setAxial(null);
     } else {
       if (axial) {
         if (gameInfo.gameStage === GameStage.CapitalSetup) {
@@ -145,10 +153,8 @@ export const HexGrid = () => {
       });
       // console.log(isCardPlay);
       if (isCardPlay && CardInfo) {
-        console.log(CardInfo);
         const a = (2 * Math.PI) / 6;
         if (Array.isArray(CardInfo.axial) && CardInfo.axial.length > 0) {
-          console.log(CardInfo);
           for (let i = 0; i < CardInfo.axial.length; i++) {
             let x = canvas.width / 2 + rad * (3 / 2) * CardInfo.axial[i].r;
             let y =
@@ -166,16 +172,13 @@ export const HexGrid = () => {
           }
         } else {
           if (CardInfo.moveData) {
-            console.log(CardInfo);
             if (axial) {
-              console.log(axial);
               for (let i = 0; i < CardInfo.moveData.length; i++) {
                 if (
                   CardInfo.moveData[i].singleAxial.q == axial.q &&
                   CardInfo.moveData[i].singleAxial.r == axial.r
                 ) {
                   for (const axialToNum of CardInfo.moveData[i].axialToNum) {
-                    console.log("sosiiiii");
                     let x =
                       canvas.width / 2 + rad * (3 / 2) * axialToNum.axial.r;
                     let y =
@@ -183,6 +186,7 @@ export const HexGrid = () => {
                       rad *
                         Math.sqrt(3) *
                         (axialToNum.axial.q + axialToNum.axial.r / 2);
+
                     ctx.strokeStyle = "black";
                     ctx.fillStyle = "transparent";
                     ctx.lineWidth = 2;
@@ -191,6 +195,12 @@ export const HexGrid = () => {
                     ctx.closePath();
                     ctx.stroke();
                   }
+
+                  ctx.fillStyle = "blue";
+                  ctx.fillRect(3500 - 30, 3500 + 30, 80, 30);
+                  ctx.font = "14px Arial";
+                  ctx.fillStyle = "white";
+                  ctx.fillText("Confirm", 3500, 3500 + 50);
                 }
               }
             } else {
@@ -215,6 +225,39 @@ export const HexGrid = () => {
             }
           }
         }
+
+        const handleConfirmClick = (event: MouseEvent) => {
+          let x = 3515;
+          let y = 3530;
+
+          const rect = canvas.getBoundingClientRect();
+          const clickX = event.clientX - rect.left;
+          const clickY = event.clientY - rect.top;
+
+          const distance = Math.sqrt((clickX - x) ** 2 + (clickY - y) ** 2);
+          if (distance <= 25) {
+            console.log("Rect clicked!");
+            myMap.forEach((value: number, key: axialCoordinates) => {
+              const newAxialToNum: AxialToNum = {
+                axial: key,
+                num: value,
+              };
+              // setAxialToNumCard((prevState) => [...prevState, newAxialToNum]);
+              if (value > 0) {
+                AxialToNumCard.push(newAxialToNum);
+              }
+            });
+            console.log(AxialToNumCard);
+            console.log(CardInputParams);
+            if (axial) {
+              setCardInputParams({
+                singleAxial: axial,
+                axialToNum: AxialToNumCard,
+              });
+              console.log(CardInputParams);
+            }
+          }
+        };
 
         const handleCanvasClick = (event: MouseEvent) => {
           var mouseX = event.clientX - canvas.getBoundingClientRect().left;
@@ -245,25 +288,67 @@ export const HexGrid = () => {
             }
           } else {
             if (CardInfo.moveData) {
-              for (let i = 0; i < CardInfo.moveData.length; i++) {
-                let x =
-                  canvas.width / 2 +
-                  rad * (3 / 2) * CardInfo.moveData[i].singleAxial.r;
-                let y =
-                  canvas.height / 2 +
-                  rad *
-                    Math.sqrt(3) *
-                    (CardInfo.moveData[i].singleAxial.q +
-                      CardInfo.moveData[i].singleAxial.r / 2);
+              if (axial) {
+                for (let i = 0; i < CardInfo.moveData.length; i++) {
+                  if (
+                    CardInfo.moveData[i].singleAxial.q == axial.q &&
+                    CardInfo.moveData[i].singleAxial.r == axial.r
+                  ) {
+                    for (const axialToNum of CardInfo.moveData[i].axialToNum) {
+                      let x =
+                        canvas.width / 2 + rad * (3 / 2) * axialToNum.axial.r;
+                      let y =
+                        canvas.height / 2 +
+                        rad *
+                          Math.sqrt(3) *
+                          (axialToNum.axial.q + axialToNum.axial.r / 2);
+                      var distance = Math.sqrt(
+                        (mouseX - x) ** 2 + (mouseY - y) ** 2
+                      );
+                      if (!myMap.has(axialToNum.axial)) {
+                        myMap.set(axialToNum.axial, 0);
+                      }
 
-                var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
-                if (distance <= 20) {
-                  console.log("clicked");
-                  if (card?.params?.includes(CardParams.singleAxial)) {
-                    setAxial({
-                      q: CardInfo.moveData[i].singleAxial.q,
-                      r: CardInfo.moveData[i].singleAxial.r,
-                    });
+                      if (distance <= 20) {
+                        if (card?.params?.includes(CardParams.axialToNum)) {
+                          if (myMap.has(axialToNum.axial)) {
+                            const currentValue = myMap.get(axialToNum.axial);
+                            console.log(axialToNum.axial);
+                            if (currentValue !== undefined) {
+                              myMap.set(axialToNum.axial, currentValue + 1);
+                            } else {
+                              console.log("Value is undefined");
+                            }
+                          } else {
+                            console.log("Key not found in map");
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              } else {
+                for (let i = 0; i < CardInfo.moveData.length; i++) {
+                  let x =
+                    canvas.width / 2 +
+                    rad * (3 / 2) * CardInfo.moveData[i].singleAxial.r;
+                  let y =
+                    canvas.height / 2 +
+                    rad *
+                      Math.sqrt(3) *
+                      (CardInfo.moveData[i].singleAxial.q +
+                        CardInfo.moveData[i].singleAxial.r / 2);
+
+                  var distance = Math.sqrt(
+                    (mouseX - x) ** 2 + (mouseY - y) ** 2
+                  );
+                  if (distance <= 20) {
+                    if (card?.params?.includes(CardParams.singleAxial)) {
+                      setAxial({
+                        q: CardInfo.moveData[i].singleAxial.q,
+                        r: CardInfo.moveData[i].singleAxial.r,
+                      });
+                    }
                   }
                 }
               }
@@ -272,9 +357,11 @@ export const HexGrid = () => {
         };
 
         canvas.addEventListener("click", handleCanvasClick);
+        canvas.addEventListener("click", handleConfirmClick);
 
         return () => {
           canvas.removeEventListener("click", handleCanvasClick);
+          canvas.removeEventListener("click", handleConfirmClick);
         };
       }
       if (
@@ -324,7 +411,17 @@ export const HexGrid = () => {
         }
       }
     }
-  }, [MapInfo, gameInfo, meinfo, isCardPlay, CardInfo, axial]);
+  }, [
+    MapInfo,
+    gameInfo,
+    meinfo,
+    isCardPlay,
+    CardInfo,
+    axial,
+    AxialToNumCard,
+    CardInputParams,
+    myMap,
+  ]);
 
   function Add_img(
     ctx: CanvasRenderingContext2D,

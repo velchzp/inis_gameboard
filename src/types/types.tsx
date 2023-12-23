@@ -127,6 +127,10 @@ export interface IPlayersUiInfo {
   }[];
 }
 
+export interface AxialToNum {
+  axial: axialCoordinates;
+  num: number;
+}
 export interface ICardParams {
   axial?: axialCoordinates[];
   singleAxial?: axialCoordinates;
