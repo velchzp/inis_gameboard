@@ -17,6 +17,7 @@ import { setGameInfo } from "../../redux/slices/GameInfoSlice";
 import { setDeck } from "../../redux/slices/MyDeckSlice";
 import { setDealCard } from "../../redux/slices/DealCardsSlice";
 import { setMeInfo, setIsActive } from "../../redux/slices/MeInfoSlice";
+import { Fight } from "../../components/Fight";
 
 export const Board = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -139,6 +140,13 @@ export const Board = () => {
             </Button>
             <CardsBlock />
           </div>
+          {gameInfo.gameStage === GameStage.Fight ? (
+            <div className="fight_block">
+              <Fight />
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       )}
     </div>
