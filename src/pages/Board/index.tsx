@@ -26,6 +26,9 @@ export const Board = () => {
   const gameInfo = useSelector((state: RootState) => state.gameinfo);
   const meinfo = useSelector((state: RootState) => state.meinfo);
   const fightInfo = useSelector((state: RootState) => state.fightinfo);
+  const attackerCycleInfo = useSelector(
+    (state: RootState) => state.attackercycleinfo
+  );
   const { id } = useParams();
   useEffect(() => {
     socket.on("connect", () => {
@@ -163,6 +166,11 @@ export const Board = () => {
                     }
                   }
                 })
+              ) : (
+                <></>
+              )}
+              {meinfo.id == attackerCycleInfo.defenderPlayerId ? (
+                <Fight />
               ) : (
                 <></>
               )}
