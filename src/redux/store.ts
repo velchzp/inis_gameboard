@@ -8,6 +8,8 @@ import GameInfoSlice from "./slices/GameInfoSlice";
 import MyDeckSlice from "./slices/MyDeckSlice";
 import DealCardsSlice from "./slices/DealCardsSlice";
 import MeInfoSlice from "./slices/MeInfoSlice";
+import FightInfoSlice from "./slices/FightInfoSlice";
+import AttackerCycleInfoSlice from "./slices/AttackerCycleInfoSlice";
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +21,8 @@ export const store = configureStore({
     deckinfo: MyDeckSlice,
     dealCard: DealCardsSlice,
     meinfo: MeInfoSlice,
+    fightinfo: FightInfoSlice,
+    attackercycleinfo: AttackerCycleInfoSlice,
   },
 });
 

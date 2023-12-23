@@ -1,4 +1,10 @@
-import { playerAction, GameStage, PretenderTokenType } from "./Enums";
+import {
+  playerAction,
+  GameStage,
+  PretenderTokenType,
+  AttackerAction,
+  DeffenderAction,
+} from "./Enums";
 import {
   Card_type,
   Timing_to_play,
@@ -187,4 +193,30 @@ export interface IMeUiInfo {
 }
 export interface IPretenderTokenInput {
   type: PretenderTokenType;
+}
+
+export interface IFightUiInfo {
+  fightHex: axialCoordinates | null;
+  players: {
+    playerId: string;
+    clansNum: number;
+    peace: boolean;
+    isActive: boolean;
+    username: string;
+  }[];
+}
+export interface IAttackCycleUiInfo {
+  status: boolean;
+  attackerPlayerId: string | null;
+  defenderPlayerId: string | null;
+}
+export interface IAttackerInputParams {
+  attackerAction: AttackerAction;
+  axial?: axialCoordinates;
+  targetPlayerId?: string;
+  clansNum?: number;
+}
+export interface IDeffenderInputParams {
+  deffenderAction: DeffenderAction;
+  cardId?: string;
 }

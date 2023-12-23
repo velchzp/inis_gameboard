@@ -50,3 +50,12 @@ export enum PretenderTokenType {
   Sanctuaries = "SAN",
   Territories = "TER",
 }
+export enum AttackerAction {
+  Atack = "ATACK",
+  Move = "MOVE",
+  Epos = "EPOS",
+}
+export enum DeffenderAction {
+  Clan = "CLAN",
+  Card = "CARD",
+}

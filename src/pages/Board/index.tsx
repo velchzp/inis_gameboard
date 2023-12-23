@@ -17,12 +17,15 @@ import { setGameInfo } from "../../redux/slices/GameInfoSlice";
 import { setDeck } from "../../redux/slices/MyDeckSlice";
 import { setDealCard } from "../../redux/slices/DealCardsSlice";
 import { setMeInfo, setIsActive } from "../../redux/slices/MeInfoSlice";
+import { setFightInfo } from "../../redux/slices/FightInfoSlice";
 import { Fight } from "../../components/Fight";
+import { setAttackerCycleInfo } from "../../redux/slices/AttackerCycleInfoSlice";
 
 export const Board = () => {
   const dispatch: AppDispatch = useDispatch();
   const gameInfo = useSelector((state: RootState) => state.gameinfo);
   const meinfo = useSelector((state: RootState) => state.meinfo);
+  const fightInfo = useSelector((state: RootState) => state.fightinfo);
   const { id } = useParams();
   useEffect(() => {
     socket.on("connect", () => {
@@ -62,6 +65,13 @@ export const Board = () => {
     });
     socket.on("is-active", (data) => {
       dispatch(setIsActive(data.isActive));
+    });
+    socket.on("fight-update", (data) => {
+      dispatch(setFightInfo(data));
+    });
+    socket.on("attackCycle-update", (data) => {
+      dispatch(setAttackerCycleInfo(data));
+      console.log("CycleInfo", data);
     });
   }, []);
   const { isCardPlay, card } = useSelector(
@@ -115,6 +125,9 @@ export const Board = () => {
               <Typography style={{ color: "white" }}>
                 Game stage: {gameInfo.gameStage}
               </Typography>
+              <Typography style={{ color: "white" }}>
+                UserID: {meinfo.id}
+              </Typography>
             </div>
             <div className="sideblock_2">
               <SideBlock />
@@ -142,7 +155,17 @@ export const Board = () => {
           </div>
           {gameInfo.gameStage === GameStage.Fight ? (
             <div className="fight_block">
-              <Fight />
+              {fightInfo ? (
+                fightInfo.players.map((player, index) => {
+                  if (player.isActive) {
+                    if (meinfo.id == player.playerId) {
+                      return <Fight key={index} />;
+                    }
+                  }
+                })
+              ) : (
+                <></>
+              )}
             </div>
           ) : (
             <></>
