@@ -1,8 +1,9 @@
 body {
-  background-color: #2a4380;
-  height: 7000px;
-  width: 7000px;
-  margin: 0px;
+  background-image: url("/public/SeaIMG.png");
+  background-size: cover;
+  height: 7000px; /* Set the height of the body to the full viewport height */
+  width: 7000px; /* Set the width of the body to the full viewport width */
+  margin: 0;
 }
 .board {
   position: absolute;

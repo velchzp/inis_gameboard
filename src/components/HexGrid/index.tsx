@@ -8,6 +8,7 @@ import { axialCoordinates, ICardParams, AxialToNum } from "../../types/types";
 import { AppDispatch } from "../../redux/store";
 import { setCardPlay } from "../../redux/slices/CardPlaySlice";
 import { CardParams, GameStage } from "../../types/Enums";
+import { Pattern } from "@mui/icons-material";
 
 var ClansNum = 0;
 const myMap: Map<axialCoordinates, number> = new Map();
@@ -82,9 +83,10 @@ export const HexGrid = () => {
     if (!ctx) {
       return;
     }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const rad = 200;
+
     if (MapInfo && SideBarInfo) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const rad = 200;
       MapInfo.hexGrid.forEach((hexagon) => {
         const { q, r, field } = hexagon;
         const territory = territoryMap?.get(field.territoryId);
@@ -99,7 +101,13 @@ export const HexGrid = () => {
         const a = (2 * Math.PI) / 6;
         let x = canvas.width / 2 + rad * (3 / 2) * r;
         let y = canvas.height / 2 + rad * Math.sqrt(3) * (q + r / 2);
-        ctx.fillStyle = territory?.field_color;
+        const img = new Image();
+        img.src = process.env.PUBLIC_URL + territory.img_scr;
+        const pattern = ctx.createPattern(img, "repeat");
+        if (!pattern) {
+          return;
+        }
+        ctx.fillStyle = pattern;
 
         ctx.beginPath();
         for (var i = 0; i < 6; i++) {
@@ -108,12 +116,11 @@ export const HexGrid = () => {
         ctx.closePath();
 
         ctx.fill();
-        ctx.strokeStyle = "black";
-        ctx.stroke();
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "white";
         ctx.font = "19px Arial";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
+        ctx.strokeText(territory.title, x, y - 150);
         ctx.fillText(territory.title, x, y - 150);
         if (
           MapInfo.holiday?.q === hexagon.q &&
@@ -129,11 +136,13 @@ export const HexGrid = () => {
         }
         if (hexagon.field.citadelsCount > 0) {
           ctx.font = "19px Arial";
+          ctx.fillStyle = "black";
           ctx.fillText(hexagon.field.citadelsCount.toString(), x + 15, y - 100);
           Add_img(ctx, "/castle 1.png", x, y, 40, -110);
         }
         if (hexagon.field.sanctuaryCount > 0) {
           ctx.font = "19px Arial";
+          ctx.fillStyle = "black";
           ctx.fillText(
             hexagon.field.sanctuaryCount.toString(),
             x + 105,
@@ -438,6 +447,8 @@ export const HexGrid = () => {
       ctx.drawImage(img, x - cor_x, y + cor_y, 70, 70);
     };
   }
+
+  function DrawMap() {}
 
   function Add_Clans(
     ctx: CanvasRenderingContext2D,

@@ -105,6 +105,7 @@ export type Territory = {
   cardId: string;
   startStructure?: StartStructure;
   field_color: string;
+  img_scr: string;
 };
 
 export interface LobbyInfo {

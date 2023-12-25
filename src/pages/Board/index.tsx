@@ -121,7 +121,7 @@ export const Board = () => {
       ) : (
         <div>
           <div className="sideblock">
-            <div className="sideblock_text">
+            {/* <div className="sideblock_text">
               <Typography style={{ color: "white" }}>
                 Username: {meinfo.username}
               </Typography>
@@ -131,7 +131,7 @@ export const Board = () => {
               <Typography style={{ color: "white" }}>
                 UserID: {meinfo.id}
               </Typography>
-            </div>
+            </div> */}
             <div className="sideblock_2">
               <SideBlock />
               <Button
@@ -140,6 +140,9 @@ export const Board = () => {
                 onClick={handlePassClick}
               >
                 Pass
+              </Button>
+              <Button variant="contained" onClick={handleNextTurnClick}>
+                Next turn
               </Button>
               <Button
                 variant="contained"
@@ -151,9 +154,6 @@ export const Board = () => {
             </div>
           </div>
           <div className="cards_block">
-            <Button variant="contained" onClick={handleNextTurnClick}>
-              Next turn
-            </Button>
             <CardsBlock />
           </div>
           {gameInfo.gameStage === GameStage.Fight ? (

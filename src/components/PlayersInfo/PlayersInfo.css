@@ -1,6 +1,6 @@
 .playerblock {
-  width: 210px;
-  height: 80px;
+  width: 180px;
+  height: 70px;
   background-color: white;
   float: right;
   margin-top: 10px;
@@ -9,7 +9,7 @@
   justify-content: center;
 }
 .activePlayerClass {
-  width: 210px;
+  width: 190px;
   height: 80px;
   background-color: rgb(170, 223, 242);
   float: right;
@@ -20,22 +20,23 @@
 }
 .nicknamebox {
   display: flex;
-  height: 25px !important;
+  height: 20px !important;
   justify-content: space-between;
 }
 .personicon {
   border: 2px solid red;
   border-radius: 20px;
   margin-top: 2px;
+  height: 17px !important;
 }
 .nickname {
   margin-left: 3px !important;
   margin-top: 5px !important;
   font-weight: bold !important;
-  font-size: small !important;
+  font-size: 12px !important;
 }
 .bren_text {
-  font-size: 13px !important;
+  font-size: 11px !important;
   padding-top: 3px !important;
   border: 1px solid orange;
   border-radius: 20px;
@@ -43,7 +44,7 @@
   padding: 3px;
 }
 .challenger_text {
-  font-size: 13px !important;
+  font-size: 11px !important;
   padding-top: 3px !important;
   border: 1px solid rgb(0, 119, 255);
   border-radius: 20px;
@@ -70,7 +71,7 @@
   background-color: red;
   width: 13px;
   border-radius: 2px;
-  padding: 3px;
+  padding: 2px;
 }
 .actioncard_number {
   border: 1px solid green;
@@ -78,7 +79,7 @@
   background-color: green;
   width: 15px;
   border-radius: 2px;
-  padding: 3px;
+  padding: 2px;
 }
 .advantcard_number {
   border: 1px solid yellow;
@@ -86,15 +87,15 @@
   background-color: yellow;
   width: 15px;
   border-radius: 2px;
-  padding: 3px;
+  padding: 2px;
 }
 .clans_number_container {
   position: relative;
   width: 0;
   height: 0;
-  border: 20px solid transparent;
+  border: 17px solid transparent;
   border-top: 0px;
-  border-bottom: 32px solid gray;
+  border-bottom: 30px solid gray;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -104,6 +105,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  font-size: 15px !important;
   transform: translate(-52%, 35%);
   color: white;
 }
@@ -112,6 +114,7 @@
   border: 1px solid rgb(250, 109, 58);
   text-align: center;
   background-color: rgb(250, 109, 58);
+  font-size: 15px !important;
   width: 15px;
   border-radius: 20px;
   padding: 3px;
