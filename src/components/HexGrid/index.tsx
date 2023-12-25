@@ -24,7 +24,7 @@ export const HexGrid = () => {
   const MapInfo = useSelector((state: RootState) => state.hexagons);
   const SideBarInfo = useSelector((state: RootState) => state.sideBar);
   const CardInfo = useSelector((state: RootState) => state.cards);
-  const [Pattern, setPattern] = useState<CanvasPattern | null>();
+
   const [CardInputParams, setCardInputParams] = useState<ICardParams | null>();
   const gameInfo = useSelector((state: RootState) => state.gameinfo);
   const meinfo = useSelector((state: RootState) => state.meinfo);
