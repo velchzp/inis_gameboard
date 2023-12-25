@@ -440,10 +440,8 @@ export const HexGrid = () => {
     const img = new Image();
     img.src = process.env.PUBLIC_URL + territory.img_scr;
     const pattern = ctx.createPattern(img, "repeat");
-    if (!pattern) {
-      return window.location.reload();
-    }
-    ctx.fillStyle = pattern;
+
+    ctx.fillStyle = pattern!;
   }
   function Add_img(
     ctx: CanvasRenderingContext2D,
