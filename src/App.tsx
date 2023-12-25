@@ -19,8 +19,11 @@ function App() {
   const gameInfo = useSelector((state: RootState) => state.gameinfo);
 
   useEffect(() => {
-    
-  }, []);
+    if (gameInfo.gameStage === GameStage.Fight) {
+      socket.emit("fight-update");
+      socket.emit("attackCycle-update");
+    }
+  });
 
   return (
     <div className="App">

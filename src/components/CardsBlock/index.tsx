@@ -5,10 +5,11 @@ import { useEffect, useState } from "react";
 import { cardActionMap } from "../../types/maps/actioncards_map";
 import { IMyDeckUiInfo, IGameUiInfo, IDealCardsInfo } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
-import { GameStage } from "../../types/Enums";
+import { GameStage, DeffenderAction } from "../../types/Enums";
 import { AppDispatch, RootState } from "../../redux/store";
 
 import { setCardPlay } from "../../redux/slices/CardPlaySlice";
+import { setAction } from "../../redux/slices/FightActionSlice";
 
 export const CardsBlock = () => {
   const [action_cards_ids, setAction_cards_ids] = useState<string[]>([]);
@@ -16,14 +17,25 @@ export const CardsBlock = () => {
   const deckinfo = useSelector((state: RootState) => state.deckinfo);
   const gameInfo = useSelector((state: RootState) => state.gameinfo);
   const Dealcards = useSelector((state: RootState) => state.dealCard);
+  const PlayerAttackerAction = useSelector(
+    (state: RootState) => state.fightaction.action
+  );
   const [cardsToDeal, setCardsToDeal] = useState<string[]>([]);
   const [cardsToDiscardNum, setcardsToDiscardNum] = useState<number>();
 
   const dispatch: AppDispatch = useDispatch();
 
   const handleCardClick = (cardClickedID: string) => {
-    const clickedCard = cardActionMap.get(cardClickedID);
-    dispatch(setCardPlay({ isCardPlay: true, card: clickedCard }));
+    if (PlayerAttackerAction === DeffenderAction.Card) {
+      socket.emit("player-fight-deffender", {
+        deffenderAction: DeffenderAction.Card,
+        cardId: cardClickedID,
+      });
+      dispatch(setAction(null));
+    } else {
+      const clickedCard = cardActionMap.get(cardClickedID);
+      dispatch(setCardPlay({ isCardPlay: true, card: clickedCard }));
+    }
   };
   const handleCardDealClick = (cardID: string) => {
     setCardsToDeal((prevSelectedCards) => [...prevSelectedCards, cardID]);

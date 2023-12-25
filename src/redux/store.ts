@@ -10,6 +10,7 @@ import DealCardsSlice from "./slices/DealCardsSlice";
 import MeInfoSlice from "./slices/MeInfoSlice";
 import FightInfoSlice from "./slices/FightInfoSlice";
 import AttackerCycleInfoSlice from "./slices/AttackerCycleInfoSlice";
+import FightActionSlice from "./slices/FightActionSlice";
 
 export const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
     meinfo: MeInfoSlice,
     fightinfo: FightInfoSlice,
     attackercycleinfo: AttackerCycleInfoSlice,
+    fightaction: FightActionSlice,
   },
 });
 
