@@ -4,7 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../redux/store";
 import { playersMap } from "../../types/maps/players_map";
 import { socket } from "../../sockets/socket";
-import { axialCoordinates, ICardParams, AxialToNum } from "../../types/types";
+import {
+  axialCoordinates,
+  ICardParams,
+  AxialToNum,
+  Territory,
+} from "../../types/types";
 import { AppDispatch } from "../../redux/store";
 import { setCardPlay } from "../../redux/slices/CardPlaySlice";
 import { CardParams, GameStage } from "../../types/Enums";
@@ -19,6 +24,7 @@ export const HexGrid = () => {
   const MapInfo = useSelector((state: RootState) => state.hexagons);
   const SideBarInfo = useSelector((state: RootState) => state.sideBar);
   const CardInfo = useSelector((state: RootState) => state.cards);
+  const [Pattern, setPattern] = useState<CanvasPattern | null>();
   const [CardInputParams, setCardInputParams] = useState<ICardParams | null>();
   const gameInfo = useSelector((state: RootState) => state.gameinfo);
   const meinfo = useSelector((state: RootState) => state.meinfo);
@@ -101,13 +107,8 @@ export const HexGrid = () => {
         const a = (2 * Math.PI) / 6;
         let x = canvas.width / 2 + rad * (3 / 2) * r;
         let y = canvas.height / 2 + rad * Math.sqrt(3) * (q + r / 2);
-        const img = new Image();
-        img.src = process.env.PUBLIC_URL + territory.img_scr;
-        const pattern = ctx.createPattern(img, "repeat");
-        if (!pattern) {
-          return;
-        }
-        ctx.fillStyle = pattern;
+
+        Add_pattern(ctx, territory);
 
         ctx.beginPath();
         for (var i = 0; i < 6; i++) {
@@ -115,6 +116,8 @@ export const HexGrid = () => {
         }
         ctx.closePath();
 
+        ctx.strokeStyle = "black";
+        ctx.stroke();
         ctx.fill();
         ctx.fillStyle = "white";
         ctx.font = "19px Arial";
@@ -430,8 +433,15 @@ export const HexGrid = () => {
     AxialToNumCard,
     CardInputParams,
     myMap,
+    Pattern,
   ]);
 
+  function Add_pattern(ctx: CanvasRenderingContext2D, territory: Territory) {
+    const img = new Image();
+    img.src = process.env.PUBLIC_URL + territory.img_scr;
+    const pattern = ctx.createPattern(img, "repeat");
+    ctx.fillStyle = pattern!;
+  }
   function Add_img(
     ctx: CanvasRenderingContext2D,
     scr: string,
@@ -447,8 +457,6 @@ export const HexGrid = () => {
       ctx.drawImage(img, x - cor_x, y + cor_y, 70, 70);
     };
   }
-
-  function DrawMap() {}
 
   function Add_Clans(
     ctx: CanvasRenderingContext2D,
