@@ -17,6 +17,7 @@ import { Pattern } from "@mui/icons-material";
 
 var ClansNum = 0;
 const myMap: Map<axialCoordinates, number> = new Map();
+const imgMap: Map<string, HTMLImageElement> = new Map();
 const AxialToNumCard: AxialToNum[] = [];
 
 export const HexGrid = () => {
@@ -78,7 +79,20 @@ export const HexGrid = () => {
   });
 
   useEffect(() => {
-    // console.log("useEffect called");
+    let imgCount = 0;
+
+    territoryMap.forEach((hexagon) => {
+      const img = new Image();
+      const territory = territoryMap?.get(hexagon.id)!;
+      img.src = process.env.PUBLIC_URL + territory.img_scr;
+      img.onload = () => {
+        imgMap.set(territory.id, img);
+        imgCount++;
+        console.log(img);
+      };
+    });
+
+    console.log("sosi");
     if (!canvasRef.current) {
       return;
     }
@@ -108,7 +122,11 @@ export const HexGrid = () => {
         let x = canvas.width / 2 + rad * (3 / 2) * r;
         let y = canvas.height / 2 + rad * Math.sqrt(3) * (q + r / 2);
 
-        Add_pattern(ctx, territory);
+        const img = imgMap.get(territory.id);
+
+        const pattern = ctx.createPattern(img!, "repeat");
+
+        ctx.fillStyle = pattern!;
 
         ctx.beginPath();
         for (var i = 0; i < 6; i++) {
@@ -286,6 +304,7 @@ export const HexGrid = () => {
 
               var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
               if (distance <= 20) {
+                console.log(card);
                 if (card?.params?.includes(CardParams.singleAxial)) {
                   setCardInputParams({
                     singleAxial: CardInfo.axial[i],
@@ -433,7 +452,6 @@ export const HexGrid = () => {
     AxialToNumCard,
     CardInputParams,
     myMap,
-    Pattern,
   ]);
 
   function Add_pattern(ctx: CanvasRenderingContext2D, territory: Territory) {
