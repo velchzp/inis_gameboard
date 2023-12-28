@@ -30,6 +30,7 @@ export interface Player {
   isBren: boolean;
   isActive: boolean;
   lastAction: playerAction;
+  color: string;
 }
 
 export interface ISidebarUiInfo {
@@ -50,6 +51,7 @@ export interface ISidebarUiInfo {
     isBren: boolean;
     isActive: boolean;
     lastAction: playerAction;
+    color: string;
   }[];
   turnDirection: string;
 }

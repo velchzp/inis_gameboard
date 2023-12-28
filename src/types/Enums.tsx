@@ -59,3 +59,11 @@ export enum DeffenderAction {
   Clan = "CLAN",
   Card = "CARD",
 }
+export enum Color {
+  red = "RED",
+  green = "GREEN",
+  blue = "BLUE",
+  yellow = "YELLOW",
+  purple = "PURPLE",
+  orange = "ORANGE",
+}

@@ -6,11 +6,16 @@ import { Player } from "../../types/types";
 import "./PlayersInfo.css";
 
 export const PlayersInfo = (props: Player) => {
+  console.log(props);
   return (
     <div className={`playerblock ${props.isActive ? "activePlayerClass" : ""}`}>
       <Box className="nicknamebox">
         <Stack className="nickname_stack">
-          <PersonIcon style={{ height: 21 }} className="personicon" />
+          <PersonIcon
+            style={{ height: 21, border: `2px solid ${props.color}` }}
+            className="personicon"
+          />
+
           <Typography className="nickname">{props.username}</Typography>
         </Stack>
         <Stack className="nickname_stack">

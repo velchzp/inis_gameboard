@@ -88,7 +88,7 @@ export const HexGrid = () => {
       img.onload = () => {
         imgMap.set(territory.id, img);
         imgCount++;
-        console.log(img);
+        // console.log(img);
       };
     });
 
@@ -126,17 +126,20 @@ export const HexGrid = () => {
 
         const pattern = ctx.createPattern(img!, "repeat");
 
-        ctx.fillStyle = pattern!;
+        // ctx.fillStyle = pattern!;
 
         ctx.beginPath();
         for (var i = 0; i < 6; i++) {
           ctx.lineTo(x + rad * Math.cos(a * i), y + rad * Math.sin(a * i));
         }
+
+        ctx.fill();
         ctx.closePath();
+        ctx.drawImage(img!, x - 200, y - 200);
 
         ctx.strokeStyle = "black";
+
         ctx.stroke();
-        ctx.fill();
         ctx.fillStyle = "white";
         ctx.font = "19px Arial";
         ctx.textAlign = "center";
@@ -172,15 +175,34 @@ export const HexGrid = () => {
           Add_img(ctx, "/chapel 1.png", x, y, -50, -110);
         }
         if (player1_clans && player1_clans > 0) {
-          Add_Clans(ctx, x - 120, y + 20, "blue", player1_clans);
+          Add_Clans(
+            ctx,
+            x - 120,
+            y + 20,
+            SideBarInfo.players[0].color,
+            player1_clans
+          );
         }
         if (player2_clans > 0) {
-          Add_Clans(ctx, x - 45, y + 20, "red", player2_clans);
+          Add_Clans(
+            ctx,
+            x - 45,
+            y + 20,
+            SideBarInfo.players[1].color,
+            player2_clans
+          );
         }
         if (player3_clans > 0) {
-          Add_Clans(ctx, x + 30, y + 20, "purple", player3_clans);
+          Add_Clans(
+            ctx,
+            x + 30,
+            y + 20,
+            SideBarInfo.players[2].color,
+            player3_clans
+          );
         }
       });
+
       // console.log(isCardPlay);
       if (isCardPlay && CardInfo) {
         const a = (2 * Math.PI) / 6;
@@ -457,7 +479,7 @@ export const HexGrid = () => {
   function Add_pattern(ctx: CanvasRenderingContext2D, territory: Territory) {
     const img = new Image();
     img.src = process.env.PUBLIC_URL + territory.img_scr;
-    const pattern = ctx.createPattern(img, "repeat");
+    const pattern = ctx.createPattern(img, "repeat-y");
 
     ctx.fillStyle = pattern!;
   }
@@ -485,9 +507,9 @@ export const HexGrid = () => {
     player_clans: number
   ) {
     const trianglePoints = [
-      { x: triangle_X, y: triangle_Y - 20 },
-      { x: triangle_X - 30, y: triangle_Y + 30 },
-      { x: triangle_X + 30, y: triangle_Y + 30 },
+      { x: triangle_X, y: triangle_Y - 30 },
+      { x: triangle_X - 35, y: triangle_Y + 35 },
+      { x: triangle_X + 35, y: triangle_Y + 35 },
     ];
     ctx.beginPath();
     ctx.moveTo(trianglePoints[0].x, trianglePoints[0].y);
@@ -497,9 +519,15 @@ export const HexGrid = () => {
     ctx.closePath();
     ctx.fillStyle = color;
     ctx.fill();
-    ctx.font = "23px Arial";
+    ctx.font = "19px Arial";
     ctx.fillStyle = "white";
-    ctx.fillText(player_clans.toString(), triangle_X, triangle_Y + 12);
+    ctx.fillText(player_clans.toString(), triangle_X, triangle_Y - 1);
+    const img = new Image();
+    img.src = process.env.PUBLIC_URL + "/viking-helmet.png";
+
+    img.onload = function () {
+      ctx.drawImage(img, triangle_X - 9, triangle_Y + 10, 20, 20);
+    };
   }
 
   return (

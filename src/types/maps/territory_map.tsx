@@ -25,7 +25,7 @@ const Swamp_ter: Territory = {
   cardId: Swamp.id,
   description: "Can't place citadel",
   field_color: "#07B898",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/swamp.png",
 };
 
 export const Hills_ter: Territory = {
@@ -34,7 +34,7 @@ export const Hills_ter: Territory = {
   cardId: Hills.id,
   description: "",
   field_color: "yellow",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/hills.png",
 };
 const Mountains_ter: Territory = {
   id: "371951b7-bb10-489a-9bf6-2269e20a2582",
@@ -43,7 +43,7 @@ const Mountains_ter: Territory = {
   description:
     "When moving 1 or more clans, player must discard 1 clan or card",
   field_color: "yellow",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/mountains.png",
 };
 const SaltMine_ter: Territory = {
   id: "f014f08a-166e-4f6e-b9b6-c1586ccf07f2",
@@ -51,7 +51,7 @@ const SaltMine_ter: Territory = {
   cardId: SaltMine.id,
   description: "",
   field_color: "yellow",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/salt_mines.png",
 };
 const Forest_ter: Territory = {
   id: "a7e1710e-5442-4b6e-af98-05c00945ee6f",
@@ -59,7 +59,7 @@ const Forest_ter: Territory = {
   cardId: Forest.id,
   description: "",
   field_color: "#009017",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/forest.png",
 };
 const Gates_ter: Territory = {
   id: "df9e1676-aa00-42ce-b6f3-a80cb3a32ba7",
@@ -69,7 +69,7 @@ const Gates_ter: Territory = {
     "When turn orders changes each player with clans on that territory must discard 1 clans and take 1 epos card",
   startStructure: StartStructure.Shrine,
   field_color: "yellow",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/gates.png",
 };
 
 const StoneCircle_ter: Territory = {
@@ -79,7 +79,7 @@ const StoneCircle_ter: Territory = {
   description: "",
   startStructure: StartStructure.Shrine,
   field_color: "yellow",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/stone_circle.png",
 };
 const Wasteland_ter: Territory = {
   id: "154d93ca-db01-403f-a9d8-c5c03ffca4c0",
@@ -87,7 +87,7 @@ const Wasteland_ter: Territory = {
   cardId: Wasteland.id,
   description: "",
   field_color: "#D4E13A",
-  img_scr: "/coveIMG.png",
+  img_scr: "/moor.png",
 };
 
 const Meadow_ter: Territory = {
@@ -96,7 +96,7 @@ const Meadow_ter: Territory = {
   cardId: Meadow.id,
   description: "",
   field_color: "yellow",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/meadow.png",
 };
 
 const ForgottenRavine_ter: Territory = {
@@ -105,7 +105,7 @@ const ForgottenRavine_ter: Territory = {
   cardId: ForgottenRavine.id,
   description: "",
   field_color: "yellow",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/forgotten_shoto.png",
 };
 
 const Bay_ter: Territory = {
@@ -114,7 +114,7 @@ const Bay_ter: Territory = {
   cardId: Bay.id,
   description: "",
   field_color: "yellow",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/cove.png",
 };
 
 const IronMine_ter: Territory = {
@@ -123,7 +123,7 @@ const IronMine_ter: Territory = {
   cardId: IronMine.id,
   description: "",
   field_color: "yellow",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/iron_mine.png",
 };
 
 const MistyLands_ter: Territory = {
@@ -132,7 +132,7 @@ const MistyLands_ter: Territory = {
   cardId: MistyLands.id,
   description: "",
   field_color: "yellow",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/mystic_land.png",
 };
 
 const Valley_ter: Territory = {
@@ -141,7 +141,7 @@ const Valley_ter: Territory = {
   cardId: Valley.id,
   description: "",
   field_color: "#009017",
-  img_scr: "/vrataTirTarTirIMG.png",
+  img_scr: "/valley.png",
 };
 
 const Plains_ter: Territory = {
@@ -150,7 +150,7 @@ const Plains_ter: Territory = {
   cardId: Plains.id,
   description: "",
   field_color: "yellow",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/rawniny.png",
 };
 
 const Plateau_ter: Territory = {
@@ -159,7 +159,7 @@ const Plateau_ter: Territory = {
   cardId: Plateau.id,
   description: "",
   field_color: "yellow",
-  img_scr: "/forestIMG.jpg",
+  img_scr: "/plateau.png",
 };
 // export const territoryMap: Map<string, Territory> = new Map([
 //   [Hills_ter.id, Hills_ter],

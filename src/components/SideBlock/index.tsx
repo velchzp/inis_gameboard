@@ -15,6 +15,7 @@ export const SideBlock = () => {
     if (SideBarInfo) {
       setPlayers(SideBarInfo.players);
       setDirection(SideBarInfo.turnDirection);
+      console.log(SideBarInfo);
     }
   });
 

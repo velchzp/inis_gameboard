@@ -50,6 +50,7 @@ export const Board = () => {
     });
     socket.on("sidebar-update", (data) => {
       dispatch(setSidebar(data));
+      console.log("Sidebar from Socket", data);
     });
     socket.on("player-card-info", (cardInfo) => {
       dispatch(setCardParams(cardInfo));
