@@ -22,7 +22,7 @@ export const NewClans: Card = {
   badge: Badge.Clans,
   description:
     "Add 2 clans on any territory with your clans. Both clans can be added on 1 territory or 2 separate ones",
-  img_url: "/NewClans.png",
+  img_url: "/New_clans.png",
   params: [CardParams.axial],
 };
 

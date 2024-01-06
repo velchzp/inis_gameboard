@@ -189,7 +189,7 @@ export const Board = () => {
             <div className="gameover-container">
               <div className="gameover-text">
                 <Typography variant="h3" style={{ color: "white" }}>
-                  Game Over
+                  Pause
                 </Typography>
               </div>
               <div className="back-to-menu">

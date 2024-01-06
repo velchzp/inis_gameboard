@@ -33,12 +33,18 @@ export const CardsBlock = () => {
       });
       dispatch(setAction(null));
     } else {
-      const clickedCard = cardActionMap.get(cardClickedID);
-      dispatch(setCardPlay({ isCardPlay: true, card: clickedCard }));
+      if (gameInfo.gameStage != GameStage.PAUSE) {
+        const clickedCard = cardActionMap.get(cardClickedID);
+        dispatch(setCardPlay({ isCardPlay: true, card: clickedCard }));
+      }
     }
   };
   const handleCardDealClick = (cardID: string) => {
-    setCardsToDeal((prevSelectedCards) => [...prevSelectedCards, cardID]);
+    if (gameInfo.gameStage != GameStage.PAUSE) {
+      setCardsToDeal((prevSelectedCards) => [...prevSelectedCards, cardID]);
+    } else {
+      console.log("GameStage is Pause");
+    }
   };
   const handleConfirmButton = (cardsToDeal: string[]) => {
     socket.emit("player-card-deal", {
