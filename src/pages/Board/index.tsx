@@ -87,6 +87,9 @@ export const Board = () => {
     socket.emit("next-turn");
     socket.emit("sidebar-update");
   };
+  const handlePauseClick = () => {
+    socket.emit("pause");
+  };
   const handlePassClick = () => {
     socket.emit("player-pass");
     socket.emit("sidebar-update");
@@ -145,6 +148,9 @@ export const Board = () => {
               <Button variant="contained" onClick={handleNextTurnClick}>
                 Next turn
               </Button>
+              <Button variant="contained" onClick={handlePauseClick}>
+                Pause
+              </Button>
               <Button
                 variant="contained"
                 className="Pass_button"
@@ -175,6 +181,26 @@ export const Board = () => {
               ) : (
                 <></>
               )}
+            </div>
+          ) : (
+            <></>
+          )}
+          {gameInfo.gameStage === GameStage.PAUSE ? (
+            <div className="gameover-container">
+              <div className="gameover-text">
+                <Typography variant="h3" style={{ color: "white" }}>
+                  Game Over
+                </Typography>
+              </div>
+              <div className="back-to-menu">
+                <Button
+                  variant="contained"
+                  className="Pass_button"
+                  onClick={handlePauseClick}
+                >
+                  Continue
+                </Button>
+              </div>
             </div>
           ) : (
             <></>

@@ -43,6 +43,7 @@ export enum GameStage {
   Season = "SEASON",
   Fight = "FIGHT",
   END = "END",
+  PAUSE = "PAUSE",
 }
 
 export enum PretenderTokenType {
