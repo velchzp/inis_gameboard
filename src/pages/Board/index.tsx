@@ -145,10 +145,14 @@ export const Board = () => {
               >
                 Pass
               </Button>
-              <Button variant="contained" onClick={handleNextTurnClick}>
+              {/* <Button variant="contained" onClick={handleNextTurnClick}>
                 Next turn
-              </Button>
-              <Button variant="contained" onClick={handlePauseClick}>
+              </Button> */}
+              <Button
+                variant="contained"
+                onClick={handlePauseClick}
+                className="Pass_button"
+              >
                 Pause
               </Button>
               <Button

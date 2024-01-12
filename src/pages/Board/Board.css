@@ -9,12 +9,15 @@ body {
   position: absolute;
   z-index: 0;
 }
-
+.Pass_button {
+  margin-top: 5px !important;
+}
 .sideblock {
   position: fixed;
   top: 0;
   right: 0;
   display: flex;
+  margin-right: 20px;
 }
 .cards_block {
   display: flex;
