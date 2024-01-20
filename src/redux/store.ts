@@ -1,4 +1,3 @@
-// store.ts
 import { configureStore } from "@reduxjs/toolkit";
 import hexagonsReducer from "./slices/hexagonsSlice";
 import SideBarSlice from "./slices/SideBarSlice";

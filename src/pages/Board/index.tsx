@@ -29,12 +29,10 @@ export const Board = () => {
   const attackerCycleInfo = useSelector(
     (state: RootState) => state.attackercycleinfo
   );
-  const { id } = useParams();
+
   useEffect(() => {
-    socket.on("connect", () => {
-      // console.log(socket.id);
-    });
-    console.log(id);
+    socket.on("connect", () => {});
+    const { id } = useParams();
     socket.emit("game-join", id, localStorage.getItem("token"));
 
     socket.emit("sidebar-update");
@@ -50,7 +48,6 @@ export const Board = () => {
     });
     socket.on("sidebar-update", (data) => {
       dispatch(setSidebar(data));
-      console.log("Sidebar from Socket", data);
     });
     socket.on("player-card-info", (cardInfo) => {
       dispatch(setCardParams(cardInfo));
@@ -75,7 +72,6 @@ export const Board = () => {
     });
     socket.on("attackCycle-update", (data) => {
       dispatch(setAttackerCycleInfo(data));
-      console.log("CycleInfo", data);
     });
   }, []);
   const { isCardPlay, card } = useSelector(

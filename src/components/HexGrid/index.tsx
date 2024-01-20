@@ -80,7 +80,6 @@ export const HexGrid = () => {
 
   useEffect(() => {
     let imgCount = 0;
-
     territoryMap.forEach((hexagon) => {
       const img = new Image();
       const territory = territoryMap?.get(hexagon.id)!;
@@ -88,11 +87,9 @@ export const HexGrid = () => {
       img.onload = () => {
         imgMap.set(territory.id, img);
         imgCount++;
-        // console.log(img);
       };
     });
 
-    console.log("sosi");
     if (!canvasRef.current) {
       return;
     }
@@ -118,33 +115,17 @@ export const HexGrid = () => {
           return;
         }
 
-        const a = (2 * Math.PI) / 6;
         let x = canvas.width / 2 + rad * (3 / 2) * r;
         let y = canvas.height / 2 + rad * Math.sqrt(3) * (q + r / 2);
 
         const img = imgMap.get(territory.id);
 
-        const pattern = ctx.createPattern(img!, "repeat");
-
-        // ctx.fillStyle = pattern!;
-
-        ctx.beginPath();
-        for (var i = 0; i < 6; i++) {
-          ctx.lineTo(x + rad * Math.cos(a * i), y + rad * Math.sin(a * i));
-        }
-
-        ctx.fill();
-        ctx.closePath();
-        ctx.drawImage(img!, x - 200, y - 200);
-
-        ctx.strokeStyle = "black";
+        ctx.drawImage(img!, x - rad, y - rad);
 
         ctx.stroke();
         ctx.fillStyle = "white";
         ctx.font = "19px Arial";
         ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.strokeText(territory.title, x, y - 150);
         ctx.fillText(territory.title, x, y - 150);
         if (
           MapInfo.holiday?.q === hexagon.q &&
@@ -205,7 +186,6 @@ export const HexGrid = () => {
 
       // console.log(isCardPlay);
       if (isCardPlay && CardInfo) {
-        const a = (2 * Math.PI) / 6;
         if (Array.isArray(CardInfo.axial) && CardInfo.axial.length > 0) {
           for (let i = 0; i < CardInfo.axial.length; i++) {
             let x = canvas.width / 2 + rad * (3 / 2) * CardInfo.axial[i].r;
@@ -476,26 +456,19 @@ export const HexGrid = () => {
     myMap,
   ]);
 
-  function Add_pattern(ctx: CanvasRenderingContext2D, territory: Territory) {
-    const img = new Image();
-    img.src = process.env.PUBLIC_URL + territory.img_scr;
-    const pattern = ctx.createPattern(img, "repeat-y");
-
-    ctx.fillStyle = pattern!;
-  }
   function Add_img(
     ctx: CanvasRenderingContext2D,
     scr: string,
     x: number,
     y: number,
-    cor_x: number,
-    cor_y: number
+    odl_x: number,
+    odl_y: number
   ) {
     const img = new Image();
     img.src = process.env.PUBLIC_URL + scr;
 
     img.onload = function () {
-      ctx.drawImage(img, x - cor_x, y + cor_y, 70, 70);
+      ctx.drawImage(img, x - odl_x, y + odl_y, 70, 70);
     };
   }
 
@@ -524,7 +497,6 @@ export const HexGrid = () => {
     ctx.fillText(player_clans.toString(), triangle_X, triangle_Y - 1);
     const img = new Image();
     img.src = process.env.PUBLIC_URL + "/viking-helmet.png";
-
     img.onload = function () {
       ctx.drawImage(img, triangle_X - 9, triangle_Y + 10, 20, 20);
     };
