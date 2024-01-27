@@ -223,3 +223,8 @@ export interface IDeffenderInputParams {
   deffenderAction: DeffenderAction;
   cardId?: string;
 }
+export interface IMessage {
+  userId: string;
+  username: string;
+  message: string;
+}

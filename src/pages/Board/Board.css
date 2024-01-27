@@ -1,8 +1,8 @@
 body {
   background-image: url("/public/SeaIMG.png");
   background-size: cover;
-  height: 7000px; /* Set the height of the body to the full viewport height */
-  width: 7000px; /* Set the width of the body to the full viewport width */
+  height: 7000px;
+  width: 7000px;
   margin: 0;
 }
 .board {
@@ -19,13 +19,20 @@ body {
   display: flex;
   margin-right: 20px;
 }
+.chat {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  margin-bottom: 200px;
+}
 .cards_block {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Выравнивание внизу блока */
+  justify-content: flex-end;
   position: fixed;
   bottom: 0;
-  height: 300px;
+  height: 170px;
   z-index: 1;
   width: 100%;
 }

@@ -13,6 +13,7 @@ import { setGameInfo } from "./redux/slices/GameInfoSlice";
 import { GameStage } from "./types/Enums";
 import { setDealCard } from "./redux/slices/DealCardsSlice";
 import { setMeInfo } from "./redux/slices/MeInfoSlice";
+import { Chat } from "./components/Chat";
 
 function App() {
   const dispatch: AppDispatch = useDispatch();
@@ -29,6 +30,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/:id" element={<Board />} />
+        <Route path="/chat" element={<Chat />} />
       </Routes>
     </div>
   );

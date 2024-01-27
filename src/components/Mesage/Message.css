@@ -1,0 +1,27 @@
+.message-username {
+  font-size: 10px !important;
+}
+.message_right {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+.orange_text {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+.message-text-right {
+  font-size: 12px !important;
+  border: 1px solid darkkhaki;
+  border-radius: 10px;
+  background-color: darkkhaki;
+  text-align: right;
+}
+.message-text-left {
+  font-size: 12px !important;
+  border: 1px solid skyblue;
+  border-radius: 10px;
+  background-color: skyblue;
+  width: 60%;
+}

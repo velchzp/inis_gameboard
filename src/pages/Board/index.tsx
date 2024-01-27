@@ -20,6 +20,7 @@ import { setMeInfo, setIsActive } from "../../redux/slices/MeInfoSlice";
 import { setFightInfo } from "../../redux/slices/FightInfoSlice";
 import { Fight } from "../../components/Fight";
 import { setAttackerCycleInfo } from "../../redux/slices/AttackerCycleInfoSlice";
+import { Chat } from "../../components/Chat";
 
 export const Board = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -29,10 +30,10 @@ export const Board = () => {
   const attackerCycleInfo = useSelector(
     (state: RootState) => state.attackercycleinfo
   );
-
+  const { id } = useParams();
   useEffect(() => {
     socket.on("connect", () => {});
-    const { id } = useParams();
+
     socket.emit("game-join", id, localStorage.getItem("token"));
 
     socket.emit("sidebar-update");
@@ -42,6 +43,7 @@ export const Board = () => {
     socket.emit("game-update");
     socket.emit("me-info");
     socket.emit("is-active");
+    socket.emit("all-messages");
 
     socket.on("map-update", (data) => {
       dispatch(setHexagons(data));
@@ -205,6 +207,9 @@ export const Board = () => {
           ) : (
             <></>
           )}
+          <div className="chat">
+            <Chat />
+          </div>
         </div>
       )}
     </div>

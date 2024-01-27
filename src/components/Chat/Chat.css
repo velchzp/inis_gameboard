@@ -1,0 +1,19 @@
+.chat {
+  width: 225px;
+  height: 200px;
+  border: 1px solid black;
+  background-color: aliceblue;
+  display: flex;
+  flex-direction: column;
+}
+.input-box {
+  display: flex;
+}
+.messages {
+  height: 173px;
+  max-height: 173px;
+  overflow: auto;
+}
+input {
+  height: 20px;
+}
