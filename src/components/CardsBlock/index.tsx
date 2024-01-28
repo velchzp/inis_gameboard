@@ -78,7 +78,6 @@ export const CardsBlock = () => {
               onClick={() => {
                 if (gameInfo?.gameStage == GameStage.Gathering) {
                   if (cardsToDeal.length == cardsToDiscardNum) {
-                    console.log("sosi");
                   } else {
                     handleCardDealClick(cardId);
                   }

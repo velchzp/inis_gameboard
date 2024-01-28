@@ -25,7 +25,7 @@ export const Fight = () => {
   );
 
   useEffect(() => {
-    console.log("Cycle from UseEffect", attackerCycleInfo);
+
   }, [fightInfo, attackerCycleInfo, PlayerAttackerAction]);
 
   const handleClanButton = () => {
@@ -40,8 +40,7 @@ export const Fight = () => {
     dispatch(setAction(AttackerAction.Atack));
   };
   const handleUsernameButton = (playerid: string) => {
-    console.log("PlayerActionAttack: ", PlayerAttackerAction);
-    console.log("PlayerID", playerid);
+  
     socket.emit("player-fight-attacker", {
       attackerAction: PlayerAttackerAction,
       targetPlayerId: playerid,

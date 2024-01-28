@@ -6,7 +6,7 @@ import { Player } from "../../types/types";
 import "./PlayersInfo.css";
 
 export const PlayersInfo = (props: Player) => {
-  console.log(props);
+ 
   return (
     <div className={`playerblock ${props.isActive ? "activePlayerClass" : ""}`}>
       <Box className="nicknamebox">

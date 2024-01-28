@@ -13,15 +13,15 @@ export const Chat = () => {
   useEffect(() => {
     socket.on("all-messages", (message) => {
       setMessages(message);
-      console.log("Mesages", message);
+   
     });
     socket.on("new-message", (message) => {
       setMessages((prevMessage) => [...prevMessage, message]);
-      console.log(message);
+     
     });
   }, []);
   const sendMessage = () => {
-    console.log(messageText);
+  
     socket.emit("send-message", { message: messageText });
   };
   return (

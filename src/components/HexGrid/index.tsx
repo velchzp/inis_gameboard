@@ -29,16 +29,14 @@ export const HexGrid = () => {
   const [CardInputParams, setCardInputParams] = useState<ICardParams | null>();
   const gameInfo = useSelector((state: RootState) => state.gameinfo);
   const meinfo = useSelector((state: RootState) => state.meinfo);
-  // const [AxialToNumCard, setAxialToNumCard] = useState<AxialToNum[]>([]);
+
   const { isCardPlay, card } = useSelector(
     (state: RootState) => state.cardPlay
   );
-  // const [ClansNum, setClansNum] = useState<number>(0);
+
   const dispatch: AppDispatch = useDispatch();
   const [axial, setAxial] = useState<axialCoordinates | null>();
   useEffect(() => {
-    // console.log(isCardPlay);
-    // console.log(card);
     if (card && isCardPlay) {
       socket.emit("player-card-info", {
         cardId: card.id,
@@ -48,7 +46,6 @@ export const HexGrid = () => {
 
   useEffect(() => {
     if (card && CardInputParams) {
-      console.log("Params to emit", CardInputParams);
       socket.emit("player-card-season", {
         cardId: card.id,
         params: CardInputParams,
@@ -75,7 +72,6 @@ export const HexGrid = () => {
         }
       }
     }
-    // console.log(MapInfo);
   });
 
   useEffect(() => {
@@ -184,7 +180,6 @@ export const HexGrid = () => {
         }
       });
 
-      // console.log(isCardPlay);
       if (isCardPlay && CardInfo) {
         if (Array.isArray(CardInfo.axial) && CardInfo.axial.length > 0) {
           for (let i = 0; i < CardInfo.axial.length; i++) {
@@ -268,7 +263,6 @@ export const HexGrid = () => {
 
           const distance = Math.sqrt((clickX - x) ** 2 + (clickY - y) ** 2);
           if (distance <= 25) {
-            console.log("Rect clicked!");
             myMap.forEach((value: number, key: axialCoordinates) => {
               const newAxialToNum: AxialToNum = {
                 axial: key,
@@ -279,14 +273,12 @@ export const HexGrid = () => {
                 AxialToNumCard.push(newAxialToNum);
               }
             });
-            console.log(AxialToNumCard);
-            console.log(CardInputParams);
+
             if (axial) {
               setCardInputParams({
                 singleAxial: axial,
                 axialToNum: AxialToNumCard,
               });
-              console.log(CardInputParams);
             }
           }
         };
@@ -306,7 +298,6 @@ export const HexGrid = () => {
 
               var distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
               if (distance <= 20) {
-                console.log(card);
                 if (card?.params?.includes(CardParams.singleAxial)) {
                   setCardInputParams({
                     singleAxial: CardInfo.axial[i],
@@ -346,7 +337,7 @@ export const HexGrid = () => {
                         if (card?.params?.includes(CardParams.axialToNum)) {
                           if (myMap.has(axialToNum.axial)) {
                             const currentValue = myMap.get(axialToNum.axial);
-                            console.log(axialToNum.axial);
+
                             if (currentValue !== undefined) {
                               myMap.set(axialToNum.axial, currentValue + 1);
                             } else {
